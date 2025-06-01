@@ -1,9 +1,11 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import EmployerSection from "./EmployerSection";
 
-interface ProfileDisplayProps {
-  username: string;
+interface BasicInfo {
+  firstName: string;
+  lastName: string;
+  intro: string;
 }
 
 interface Employer {
@@ -13,41 +15,28 @@ interface Employer {
   duration: string;
   type: "Full-time" | "Contract" | "Freelance";
   summary: string;
-  videos: string[]; // Mock video data (URLs or IDs)
+  videos: string[];
 }
 
-export default function ProfileDisplay({ username }: ProfileDisplayProps) {
-  // Mock initial data for basic info
-  const [basicInfo, setBasicInfo] = useState({
-    firstName: "",
-    lastName: username.charAt(0).toUpperCase() + username.slice(1),
-    intro: "This is a short introduction.",
-  });
-  const [editingBasicInfo, setEditingBasicInfo] = useState(false);
-  const [basicInfoForm, setBasicInfoForm] = useState(basicInfo);
+interface MockProfileData {
+  basicInfo: BasicInfo;
+  employers: Employer[];
+}
 
-  // Mock initial data for employers
-  const [employers, setEmployers] = useState<Employer[]>([
-    {
-      id: 1,
-      name: "Daniel Wall",
-      jobTitle: "Thumbnail Artist",
-      duration: "Sep 2024 - Sep 2024",
-      type: "Contract",
-      summary: "I worked with Daniel on a one-time project as a ...Read more",
-      videos: ["video1", "video2"], // Mock data
-    },
-    {
-      id: 2,
-      name: "Austin Sprinz",
-      jobTitle: "Video Editor",
-      duration: "Jul 2024 - Present",
-      type: "Freelance",
-      summary: "As the video editor for Austin Sprinz's YouTube channel, I ...Read more",
-      videos: ["video3", "video4", "video5"], // Mock data
-    },
-  ]);
-  const [nextEmployerId, setNextEmployerId] = useState(3);
+interface ProfileDisplayProps {
+  username: string;
+  initialData: MockProfileData;
+}
+
+export default function ProfileDisplay({ username, initialData }: ProfileDisplayProps) {
+  // Use initialData from props
+  const [basicInfo, setBasicInfo] = useState(initialData.basicInfo);
+  const [editingBasicInfo, setEditingBasicInfo] = useState(false);
+  const [basicInfoForm, setBasicInfoForm] = useState(initialData.basicInfo);
+
+  // Use initialData from props
+  const [employers, setEmployers] = useState<Employer[]>(initialData.employers);
+  const [nextEmployerId, setNextEmployerId] = useState(initialData.employers.length > 0 ? Math.max(...initialData.employers.map(emp => emp.id)) + 1 : 1);
 
   const handleEditBasicInfo = () => {
     setBasicInfoForm(basicInfo);
@@ -65,6 +54,8 @@ export default function ProfileDisplay({ username }: ProfileDisplayProps) {
   const handleSaveBasicInfo = () => {
     setBasicInfo(basicInfoForm);
     setEditingBasicInfo(false);
+    // In a real app, you would save this to the backend here
+    console.log("Saving basic info:", basicInfoForm);
   };
 
   const handleAddEmployer = () => {
@@ -79,14 +70,20 @@ export default function ProfileDisplay({ username }: ProfileDisplayProps) {
     };
     setEmployers([...employers, newEmployer]);
     setNextEmployerId(nextEmployerId + 1);
+    // In a real app, you would save this to the backend here
+    console.log("Adding employer:", newEmployer);
   };
 
   const handleUpdateEmployer = (updatedEmployer: Employer) => {
     setEmployers(employers.map(emp => (emp.id === updatedEmployer.id ? updatedEmployer : emp)));
+    // In a real app, you would save this to the backend here
+    console.log("Updating employer:", updatedEmployer);
   };
 
   const handleDeleteEmployer = (employerId: number) => {
     setEmployers(employers.filter(emp => emp.id !== employerId));
+    // In a real app, you would save this to the backend here
+    console.log("Deleting employer with ID:", employerId);
   };
 
   return (
