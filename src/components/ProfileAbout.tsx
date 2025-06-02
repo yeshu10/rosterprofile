@@ -1,6 +1,6 @@
 "use client";
 
-import { BasicInfo } from "@/utils/mockApi";
+
 
 interface ProfileAboutProps {
   basicInfo: BasicInfo;

@@ -1,7 +1,22 @@
 "use client";
 
-import { useState } from "react";
+import { useState, FormEvent } from "react";
 import { useRouter } from "next/navigation";
+
+// Assuming the parse endpoint returns data like { success: boolean, data?: ExtractedData }
+// Assuming the create endpoint returns data like { success: boolean, username?: string, message?: string }
+
+interface PortfolioParseResponse {
+  success: boolean;
+  data?: any; // Define a more specific type based on the API response
+  message?: string;
+}
+
+interface ProfileCreateResponse {
+  success: boolean;
+  username?: string; // Or whatever the profile identifier is named in the API response
+  message?: string;
+}
 
 export default function SubmitPortfolio() {
   const [url, setUrl] = useState("");
@@ -9,29 +24,62 @@ export default function SubmitPortfolio() {
   const [error, setError] = useState("");
   const router = useRouter();
 
-  function extractUsername(url: string) {
-    try {
-      const u = new URL(url);
-      const paths = u.pathname.split("/").filter(Boolean);
-      return paths[0] || "profile";
-    } catch {
-      return "profile";
-    }
-  }
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
+
     if (!url || !/^https?:\/\//.test(url)) {
       setError("Please enter a valid URL.");
       return;
     }
+
     setLoading(true);
+
     try {
-      const username = extractUsername(url);
-      router.push(`/profile/${username}`);
-    } catch (err) {
-      setError("Failed to submit portfolio. Please try again.");
+      // Step 1: Call the parse endpoint
+      const parseResponse = await fetch(
+      "https://virtserver.swaggerhub.com/justforlearning-b6e/rosterprofile/1.0.0/api/portfolio/parse",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ url }),
+      }
+    );
+
+      const parseResult: PortfolioParseResponse = await parseResponse.json();
+
+      if (!parseResult.success || !parseResult.data) {
+        setError(parseResult.message || "Failed to parse portfolio.");
+        setLoading(false);
+        return;
+      }
+
+      // Step 2: Use parsed data to call the create profile endpoint
+      const createResponse = await fetch('/api/profile/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        // Assuming the create endpoint accepts the data directly from the parse response
+        body: JSON.stringify(parseResult.data), // Adjust this based on what /api/profile/create expects
+      });
+
+      const createResult: ProfileCreateResponse = await createResponse.json();
+
+      if (!createResult.success || !createResult.username) {
+        setError(createResult.message || "Failed to create profile.");
+        setLoading(false);
+        return;
+      }
+
+      // Step 3: Redirect to the created profile page
+      router.push(`/profile/${createResult.username}`);
+
+    } catch (err: any) {
+      console.error("API Error:", err);
+      setError("An error occurred during the process.");
     } finally {
       setLoading(false);
     }

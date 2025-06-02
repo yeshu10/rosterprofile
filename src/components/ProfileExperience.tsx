@@ -1,6 +1,5 @@
 "use client";
 
-import { Employer } from "@/utils/mockApi";
 
 interface ProfileExperienceProps {
   employers: Employer[];
