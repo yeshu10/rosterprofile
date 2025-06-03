@@ -1,13 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import { BasicInfo } from "@/utils/mockApi";
 import { useState } from "react";
+import type { BasicInfo } from '@/types';
 
 interface ProfileSidebarProps {
   basicInfo: BasicInfo;
   username: string;
-  onMenuItemClick: (section: string) => void;
+  onMenuItemClick: (menu: string) => void;
 }
 
 export default function ProfileSidebar({
@@ -17,89 +17,57 @@ export default function ProfileSidebar({
 }: ProfileSidebarProps) {
   const [activeMenu, setActiveMenu] = useState("about");
 
-  const handleMenuItemClick = (section: string) => {
-    setActiveMenu(section);
-    onMenuItemClick(section);
+  const handleMenuItemClick = (menu: string) => {
+    setActiveMenu(menu);
+    onMenuItemClick(menu);
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6">
-      {/* Profile Image and Basic Info */}
-      <div className="flex flex-col items-center mb-6">
-        <div className="relative w-24 h-24 mb-4">
-          <Image
+    <div className="bg-white rounded-lg shadow p-6">
+      {/* Profile Header */}
+      <div className="text-center mb-6">
+        <div className="w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden">
+          <img
             src={`https://i.pravatar.cc/150?u=${username}`}
-            alt={`${basicInfo.firstName} ${basicInfo.lastName}`}
-            width={96}
-            height={96}
-            className="rounded-full object-cover w-24 h-24"
+            alt={basicInfo.name}
+            className="w-full h-full object-cover"
           />
         </div>
-        <h2 className="text-xl font-bold text-gray-900 mb-1">
-          {basicInfo.firstName} {basicInfo.lastName}
-        </h2>
-        <p className="text-gray-600 text-sm">Video Editor</p> {/* Placeholder Title */}
-        <button className="mt-3 px-4 py-2 bg-green-500 text-white rounded-md text-sm hover:bg-green-600 transition">
-          Open to work
-        </button>
+        <h1 className="text-2xl font-bold text-gray-900">{basicInfo.name}</h1>
+        <p className="text-gray-600">{basicInfo.title}</p>
+        <p className="text-gray-500 text-sm mt-1">{basicInfo.location}</p>
       </div>
 
-      {/* Location and Verification (Placeholder) */}
-      <div className="border-t border-gray-200 pt-6 mb-6">
-        <div className="flex items-center text-gray-600 text-sm mb-2">
-          {/* Placeholder Icon */}
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-4 w-4 mr-2"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.828 0l-4.243-4.243a8 8 0 1111.314 0z"
-            />
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-            />
-          </svg>
-          Verified Jan 19, 2024
-        </div>
-        <div className="flex items-center text-gray-600 text-sm">
-          {/* Placeholder Icon */}
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-4 w-4 mr-2"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.828 0l-4.243-4.243a8 8 0 1111.314 0z"
-            />
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-            />
-          </svg>
-          Los Angeles, United States
-        </div>
-         <div className="flex items-center text-gray-600 text-sm mt-2">
-          {/* Placeholder Icon */}
-           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="size-4 mr-2">
-             <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.503 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.497 6.997 21 6.375 21H4.125C3.503 21 3 20.497 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.497 3 21 3.503 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z" />
-          </svg>
-           LankyBox (41.1M Subscribers) {/* Placeholder Data */}
+      {/* Contact Info */}
+      <div className="mb-6">
+        <h3 className="text-lg font-bold text-gray-900 mb-4">CONTACT INFO</h3>
+        <div className="space-y-2">
+          <div className="flex items-center text-gray-600 text-sm">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 mr-2">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+            </svg>
+            {basicInfo.email}
+          </div>
+          {basicInfo.socialLinks.github && (
+            <div className="flex items-center text-gray-600 text-sm">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 mr-2">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" />
+              </svg>
+              <a href={basicInfo.socialLinks.github} target="_blank" rel="noopener noreferrer" className="hover:text-blue-600">
+                GitHub
+              </a>
+            </div>
+          )}
+          {basicInfo.socialLinks.linkedin && (
+            <div className="flex items-center text-gray-600 text-sm">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 mr-2">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 00.75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 00-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0112 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 01-.673-.38m0 0A2.18 2.18 0 013 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 013.413-.387m7.5 0V5.25A2.25 2.25 0 0013.5 3h-3a2.25 2.25 0 00-2.25 2.25v.894m7.5 0a48.667 48.667 0 00-7.5 0M12 12.75h.008v.008H12v-.008z" />
+              </svg>
+              <a href={basicInfo.socialLinks.linkedin} target="_blank" rel="noopener noreferrer" className="hover:text-blue-600">
+                LinkedIn
+              </a>
+            </div>
+          )}
         </div>
       </div>
 
@@ -123,7 +91,6 @@ export default function ProfileSidebar({
               Worked With
             </button>
           </li>
-          {/* Add more menu items here */} 
         </ul>
       </div>
     </div>

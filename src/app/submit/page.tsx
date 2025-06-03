@@ -2,21 +2,10 @@
 
 import { useState, FormEvent } from "react";
 import { useRouter } from "next/navigation";
+import { PortfolioParseResponse, ProfileCreateResponse } from "@/types";
 
 // Assuming the parse endpoint returns data like { success: boolean, data?: ExtractedData }
 // Assuming the create endpoint returns data like { success: boolean, username?: string, message?: string }
-
-interface PortfolioParseResponse {
-  success: boolean;
-  data?: any; // Define a more specific type based on the API response
-  message?: string;
-}
-
-interface ProfileCreateResponse {
-  success: boolean;
-  username?: string; // Or whatever the profile identifier is named in the API response
-  message?: string;
-}
 
 export default function SubmitPortfolio() {
   const [url, setUrl] = useState("");
@@ -37,16 +26,13 @@ export default function SubmitPortfolio() {
 
     try {
       // Step 1: Call the parse endpoint
-      const parseResponse = await fetch(
-      "https://virtserver.swaggerhub.com/justforlearning-b6e/rosterprofile/1.0.0/api/portfolio/parse",
-      {
+      const parseResponse = await fetch("/api/portfolio/parse", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ url }),
-      }
-    );
+      });
 
       const parseResult: PortfolioParseResponse = await parseResponse.json();
 
@@ -62,8 +48,7 @@ export default function SubmitPortfolio() {
         headers: {
           'Content-Type': 'application/json',
         },
-        // Assuming the create endpoint accepts the data directly from the parse response
-        body: JSON.stringify(parseResult.data), // Adjust this based on what /api/profile/create expects
+        body: JSON.stringify(parseResult.data),
       });
 
       const createResult: ProfileCreateResponse = await createResponse.json();
@@ -77,7 +62,7 @@ export default function SubmitPortfolio() {
       // Step 3: Redirect to the created profile page
       router.push(`/profile/${createResult.username}`);
 
-    } catch (err: any) {
+    } catch (err) {
       console.error("API Error:", err);
       setError("An error occurred during the process.");
     } finally {

@@ -1,108 +1,113 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import ProfileSidebar from "@/components/ProfileSidebar";
-import ProfileAbout from "@/components/ProfileAbout";
-import ProfileExperience from "@/components/ProfileExperience";
+import { useEffect, useState } from 'react';
+import { useParams } from 'next/navigation';
+import type { PortfolioData } from '@/types';
+import ProfileSidebar from '@/components/ProfileSidebar';
+import ProfileAbout from '@/components/ProfileAbout';
+import ProfileExperience from '@/components/ProfileExperience';
 
-// Assuming the API response structure for GET /api/profile/[username]
-interface RealProfileData {
-  basicInfo: {
-    firstName: string;
-    lastName: string;
-    intro: string;
-    // Add other basic info fields if the API provides them
-  };
-  employers: {
-    id: number;
-    name: string;
-    jobTitle: string;
-    duration: string;
-    type: "Full-time" | "Contract" | "Freelance";
-    summary: string;
-    videos: string[];
-    // Add other employer fields if the API provides them
-  }[];
-  // Add other top-level profile data fields if the API provides them (like skills, projects, etc.)
-}
-
-interface ProfilePageProps {
-  params: {
-    username: string;
-  };
-}
-
-export default function ProfilePage({ params }: ProfilePageProps) {
-  const [profileData, setProfileData] = useState<RealProfileData | null>(null);
+export default function ProfilePage() {
+  const params = useParams();
+  const [profileData, setProfileData] = useState<PortfolioData | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-  const [activeSection, setActiveSection] = useState("about");
+  const [error, setError] = useState('');
 
   useEffect(() => {
-    async function loadProfileData() {
+    const fetchProfile = async () => {
       try {
-        setLoading(true);
-        // Fetch data from the real API endpoint
-        const response = await fetch(`/api/profile/${params.username}`);
-        
-        if (!response.ok) {
-          throw new Error(`Failed to fetch profile: ${response.statusText}`);
-        }
+        // In a real app, this would fetch from your database
+        // For now, we'll use the mock data
+        const mockData: PortfolioData = {
+          username: params.username as string,
+          basicInfo: {
+            name: "Test User",
+            title: "Software Developer",
+            intro: "Experienced developer with a passion for web technologies",
+            location: "New York, USA",
+            email: "test@example.com",
+            socialLinks: {
+              github: "https://github.com/testuser",
+              linkedin: "https://linkedin.com/in/testuser"
+            }
+          },
+          experience: [
+            {
+              company: "Tech Corp",
+              position: "Senior Developer",
+              duration: "2020-Present",
+              description: "Leading development of web applications"
+            }
+          ],
+          skills: ["JavaScript", "React", "Node.js", "TypeScript"]
+        };
 
-        const data: RealProfileData = await response.json();
-        setProfileData(data);
-      } catch (err: any) {
-        console.error("API Fetch Error:", err);
-        setError(err.message || "Failed to load profile data");
+        setProfileData(mockData);
+      } catch (err) {
+        setError('Failed to load profile');
+        console.error('Error loading profile:', err);
       } finally {
         setLoading(false);
       }
-    }
+    };
 
-    loadProfileData();
-  }, [params.username]); // Depend on params.username
+    fetchProfile();
+  }, [params.username]);
 
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+        <div className="text-xl">Loading...</div>
       </div>
     );
   }
 
-  if (error) {
+  if (error || !profileData) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-red-500">{error}</div>
-      </div>
-    );
-  }
-
-  if (!profileData) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-gray-500">No profile data available</div>
+        <div className="text-xl text-red-500">{error || 'Profile not found'}</div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-6 sm:py-12 lg:py-16 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Sidebar */}
-        <div className="lg:col-span-1">
-          <ProfileSidebar
-            basicInfo={profileData.basicInfo}
-            username={params.username} // Pass params.username
-            onMenuItemClick={setActiveSection}
-          />
-        </div>
+    <div className="min-h-screen bg-gray-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="flex flex-col md:flex-row gap-8">
+          {/* Sidebar */}
+          <div className="w-full md:w-1/3">
+            <ProfileSidebar
+              basicInfo={profileData.basicInfo}
+              username={profileData.username}
+              onMenuItemClick={(menu) => console.log('Menu clicked:', menu)}
+            />
+          </div>
 
-        {/* Main Content */}
-        <div className="lg:col-span-2 bg-white rounded-lg shadow-md p-8">
-          {activeSection === "about" && <ProfileAbout basicInfo={profileData.basicInfo} />}
-          {activeSection === "experience" && profileData.employers && <ProfileExperience employers={profileData.employers} />}
-          {/* Add more sections based on activeSection state and available data */}
+          {/* Main Content */}
+          <div className="w-full md:w-2/3">
+            <div className="bg-white rounded-lg shadow p-6 mb-6">
+              <ProfileAbout basicInfo={profileData.basicInfo} />
+            </div>
+
+            <div className="bg-white rounded-lg shadow p-6">
+              <ProfileExperience employers={profileData.experience} />
+            </div>
+
+            {/* Skills Section */}
+            <div className="bg-white rounded-lg shadow p-6 mt-6">
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">Skills</h2>
+              <div className="flex flex-wrap gap-2">
+                {profileData.skills.map((skill, index) => (
+                  <span
+                    key={index}
+                    className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm"
+                  >
+                    {skill}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
