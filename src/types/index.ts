@@ -32,9 +32,8 @@ export interface Experience {
   duration: string;
   description: string;
   type?: string;
-  projects?: number;
+  projects?: Project[];
   subscribers?: number;
-  videos?: string[];
 }
 
 export interface Project {

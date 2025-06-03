@@ -64,9 +64,18 @@ export async function POST(request: Request): Promise<NextResponse<PortfolioPars
           duration: "Sep 2024 - Sep 2024",
           description: "I worked with Daniel on a one-time project as a thumbnail designer for his interview with Ryan Tedder. ...Read more",
           type: 'Contract',
-          projects: 1,
+          projects: [
+            {
+              id: 'proj-1a',
+              title: 'Why OneRepublic Told ...',
+              description: 'Thumbnail for interview with Ryan Tedder.',
+              imageUrl: 'https://via.placeholder.com/400x200?text=Project+1A',
+              views: 19000000,
+              likes: 640000,
+              platform: 'youtube',
+            },
+          ],
           subscribers: 1100000,
-          videos: ['Why OneRepublic Told ...']
         },
         {
           id: 'exp-2',
@@ -75,9 +84,45 @@ export async function POST(request: Request): Promise<NextResponse<PortfolioPars
           duration: "Jul 2024 - Present",
           description: "As the video editor for Austin Sprinz's YouTube channel, I ...Read more",
           type: 'Freelance',
-          projects: 5,
+          projects: [
+            {
+              id: 'proj-2a',
+              title: 'Do NOT choose the wro...',
+              description: 'Video editing for a YouTube video.',
+              imageUrl: 'https://via.placeholder.com/400x200?text=Project+2A',
+              views: 7800000,
+              likes: 300000,
+              platform: 'youtube',
+            },
+             {
+              id: 'proj-2b',
+              title: 'Pasta Night!',
+              description: 'Short form content.',
+              imageUrl: 'https://via.placeholder.com/400x200?text=Project+2B',
+              views: 5000000,
+              likes: 200000,
+              platform: 'tiktok',
+            },
+             {
+              id: 'proj-2c',
+              title: 'How to choose Salad Ni...',
+              description: 'Tutorial video.',
+              imageUrl: 'https://via.placeholder.com/400x200?text=Project+2C',
+              views: 3000000,
+              likes: 150000,
+              platform: 'instagram',
+            },
+             {
+              id: 'proj-2d',
+              title: 'How To Choose Ice Cre...',
+              description: 'Fun short.',
+              imageUrl: 'https://via.placeholder.com/400x200?text=Project+2D',
+              views: 2000000,
+              likes: 100000,
+              platform: 'facebook',
+            }
+          ],
           subscribers: 7800000,
-          videos: []
         },
         {
           id: 'exp-3',
@@ -86,9 +131,27 @@ export async function POST(request: Request): Promise<NextResponse<PortfolioPars
           duration: "Jun 2024 - Present",
           description: "As the long-form video editor and thumbnail designer for Nathan ...Read more",
           type: 'Freelance',
-          projects: 4,
+          projects: [
+             {
+              id: 'proj-3a',
+              title: 'Project Alpha',
+              description: 'Description for Project Alpha.',
+              imageUrl: 'https://via.placeholder.com/400x200?text=Project+3A',
+              views: 1000000,
+              likes: 50000,
+              platform: 'youtube',
+            },
+             {
+              id: 'proj-3b',
+              title: 'Project Beta',
+              description: 'Description for Project Beta.',
+              imageUrl: 'https://via.placeholder.com/400x200?text=Project+3B',
+              views: 800000,
+              likes: 40000,
+              platform: 'tiktok',
+            }
+          ],
           subscribers: 10400000,
-          videos: []
         }
       ],
       isAvailable: true,

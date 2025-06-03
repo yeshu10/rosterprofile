@@ -10,23 +10,13 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  // Initialize theme state to 'light' on both server and client initially
-  const [theme, setTheme] = useState<"light" | "dark">('light');
-
-  // Use useEffect to determine and set the theme on the client side based on localStorage or system preference
-  useEffect(() => {
+  const [theme, setTheme] = useState<"light" | "dark">(() => {
     if (typeof window !== "undefined") {
       const storedTheme = localStorage.getItem("theme") as "light" | "dark" | null;
-      if (storedTheme) {
-        setTheme(storedTheme);
-      } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-        setTheme("dark");
-      } else {
-         // If no stored theme and system preference is not dark, default to light
-        setTheme("light");
-      }
+      if (storedTheme) return storedTheme;
     }
-  }, []); // Empty dependency array ensures this runs only once on mount
+    return "light";
+  });
 
   // Ensure the 'dark' class is applied/removed when theme changes
   useEffect(() => {
