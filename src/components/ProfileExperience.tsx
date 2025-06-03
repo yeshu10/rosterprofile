@@ -56,7 +56,7 @@ export default function ProfileExperience({ employers, onViewProjects }: Profile
      const sortCriteria = videoSortCriteria[experienceId] || 'default'; // 'default' or other criteria
      const filterCriteria = videoFilterCriteria[experienceId] || 'all'; // 'all' or specific platform
 
-     let filtered = videos.filter(video => video.toLowerCase().includes(searchTerm));
+     const filtered = videos.filter(video => video.toLowerCase().includes(searchTerm));
 
      // Basic filtering by platform (needs more detailed video data to be truly effective)
      if (filterCriteria !== 'all') {

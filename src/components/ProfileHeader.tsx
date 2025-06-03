@@ -1,4 +1,7 @@
+"use client";
+
 import type { BasicInfo } from '@/types';
+import Image from 'next/image';
 
 interface ProfileHeaderProps {
   basicInfo: BasicInfo;
@@ -10,9 +13,11 @@ export default function ProfileHeader({ basicInfo, username, isOpenToWork = fals
   return (
     <div className="text-center mb-6">
       <div className="w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden">
-        <img
+        <Image
           src={`https://i.pravatar.cc/150?u=${username}`}
           alt={basicInfo.name}
+          width={128}
+          height={128}
           className="w-full h-full object-cover"
         />
       </div>
