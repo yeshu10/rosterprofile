@@ -3,7 +3,7 @@ import type { PortfolioData, PortfolioParseResponse } from '@/types';
 
 export async function POST(request: Request): Promise<NextResponse<PortfolioParseResponse>> {
   try {
-    const { url: _url }: { url: string } = await request.json();
+    await request.json();
 
     // Mock data for testing
     const mockData: PortfolioData = {
@@ -103,14 +103,9 @@ export async function POST(request: Request): Promise<NextResponse<PortfolioPars
     };
 
     return NextResponse.json(response);
-  } catch (error) {
-  console.error("Error creating profile:", error);
-
-  return NextResponse.json(
-    { success: false, message: "Failed to parse portfolio" },
-    { status: 400 }
-  );
-}
-
+  } catch (err) {
+    console.error("Error parsing portfolio:", err);
+    return NextResponse.json({ success: false, message: "An internal error occurred during parsing." });
+  }
 }
 

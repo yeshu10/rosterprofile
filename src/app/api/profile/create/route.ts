@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import type { PortfolioData } from '@/types';
 import { ProfileCreateResponse } from "@/types";
 
 // Mock data - replace with actual profile creation logic
@@ -11,7 +10,7 @@ const mockProfileCreationResponse = {
 
 export async function POST(request: Request): Promise<NextResponse<ProfileCreateResponse>> {
   try {
-    const profileData = await request.json();
+    await request.json();
 
  
     await new Promise(resolve => setTimeout(resolve, 500));
