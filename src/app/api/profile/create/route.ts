@@ -13,10 +13,7 @@ export async function POST(request: Request): Promise<NextResponse<ProfileCreate
   try {
     const profileData = await request.json();
 
-    // In a real application, you would save the profileData to your database.
-    // For this mock implementation, we return a static success response.
-
-    // Simulate profile creation delay
+ 
     await new Promise(resolve => setTimeout(resolve, 500));
 
     return NextResponse.json(mockProfileCreationResponse);
