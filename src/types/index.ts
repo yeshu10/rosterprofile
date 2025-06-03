@@ -37,6 +37,18 @@ export interface Experience {
   videos?: string[];
 }
 
+export interface Project {
+  id: string;
+  title: string;
+  description: string;
+  imageUrl: string;
+  projectUrl?: string;
+  githubUrl?: string;
+  views?: number;
+  likes?: number;
+  platform?: string;
+}
+
 export interface PortfolioData {
   username: string;
   basicInfo: BasicInfo;
