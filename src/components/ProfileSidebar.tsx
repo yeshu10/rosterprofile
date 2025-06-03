@@ -31,7 +31,7 @@ export default function ProfileSidebar({
   };
 
   return (
-    <div className="bg-white rounded-lg shadow p-6">
+    <div className="bg-white text-gray-900 dark:bg-gray-800 dark:text-gray-100 rounded-lg shadow p-6 transition-colors duration-300">
       <ProfileHeader
         basicInfo={basicInfo}
         username={username}

@@ -31,7 +31,8 @@ export default function ProfilePage() {
         });
 
         if (!response.ok) {
-          throw new Error('Failed to fetch profile data');
+          const errorData = await response.json();
+          throw new Error(errorData.message || 'Failed to fetch profile data');
         }
 
         const result: PortfolioParseResponse = await response.json();
@@ -69,15 +70,15 @@ export default function ProfilePage() {
   };
 
   if (loading) {
-    return <div className="text-center mt-8">Loading...</div>;
+    return <div className="text-center mt-8 text-gray-900 dark:text-gray-100">Loading...</div>;
   }
 
   if (error) {
-    return <div className="text-center mt-8 text-red-500">Error: {error}</div>;
+    return <div className="text-center mt-8 text-red-600 dark:text-red-400">Error: {error}</div>;
   }
 
   if (!profileData) {
-    return <div className="text-center mt-8">Profile not found.</div>;
+    return <div className="text-center mt-8 text-gray-900 dark:text-gray-100">Profile not found.</div>;
   }
 
   // Destructure for easier access
@@ -116,15 +117,15 @@ export default function ProfilePage() {
           {basicInfo.myDetails?.skills && basicInfo.myDetails.skills.length > 0 && <ProfileSkills skills={basicInfo.myDetails.skills} />}
 
           {/* Projects Section - Placeholder */}
-          <div id="projects" className="mt-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Projects</h2>
-            <p className="text-gray-700">Projects section coming soon...</p>
+          <div id="projects" className="mt-8 text-gray-900 dark:text-gray-100">
+            <h2 className="text-2xl font-bold mb-4">Projects</h2>
+            <p>Projects section coming soon...</p>
           </div>
 
           {/* Content Section - Placeholder */}
-          <div id="content" className="mt-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Content</h2>
-            <p className="text-gray-700">Content section coming soon...</p>
+          <div id="content" className="mt-8 text-gray-900 dark:text-gray-100">
+            <h2 className="text-2xl font-bold mb-4">Content</h2>
+            <p>Content section coming soon...</p>
           </div>
         </div>
       </div>

@@ -43,7 +43,7 @@ export default function ProfileExperience({ employers, onViewProjects }: Profile
     if (count >= 1000000) {
       return (count / 1000000).toFixed(1) + 'M';
     } else if (count >= 1000) {
-      return (count / 1000).toFixed(1) + 'K';
+      return (count / 1000).toFixed(1) + 'k';
     } else {
       return count.toString();
     }
@@ -78,12 +78,12 @@ export default function ProfileExperience({ employers, onViewProjects }: Profile
    };
 
   return (
-    <div id="experience">
+    <div id="experience" className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 transition-colors duration-300">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-2xl font-bold text-gray-900">My experience ({employers.length})</h2>
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">My experience ({employers.length})</h2>
         {/* View My Projects Button */}
         <div>
-           <button onClick={onViewProjects} className="text-blue-600 hover:underline text-sm">View my projects</button>
+           <button onClick={onViewProjects} className="text-blue-600 dark:text-blue-400 hover:underline text-sm">View my projects</button>
         </div>
       </div>
 
@@ -94,12 +94,12 @@ export default function ProfileExperience({ employers, onViewProjects }: Profile
           const filteredAndSortedVideos = filterAndSortVideos(employer.videos, employer.id);
 
           return (
-            <div key={employer.id} className="bg-white rounded-lg shadow p-6">
+            <div key={employer.id} className="bg-white text-gray-900 dark:bg-gray-700 dark:text-gray-100 rounded-lg shadow p-6 transition-colors duration-300">
               {/* Header with Toggle */}
               <div className="flex justify-between items-center cursor-pointer" onClick={() => toggleExperience(employer.id)}>
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900">{employer.company}</h3>
-                  <p className="text-gray-600 text-sm">{employer.position}</p>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{employer.company}</h3>
+                  <p className="text-gray-600 dark:text-gray-400 text-sm">{employer.position}</p>
                 </div>
                 {/* Toggle Icon */}
                 <svg
@@ -108,7 +108,7 @@ export default function ProfileExperience({ employers, onViewProjects }: Profile
                   viewBox="0 0 24 24"
                   strokeWidth={1.5}
                   stroke="currentColor"
-                  className={`w-5 h-5 text-gray-500 transform transition-transform ${isExperienceOpen ? 'rotate-180' : 'rotate-0'}`}
+                  className={`w-5 h-5 text-gray-500 dark:text-gray-300 transform transition-transform ${isExperienceOpen ? 'rotate-180' : 'rotate-0'}`}
                 >
                   <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                 </svg>
@@ -121,13 +121,13 @@ export default function ProfileExperience({ employers, onViewProjects }: Profile
                    {employer.videos && employer.videos.length > 0 && (
                      <div className="flex items-center justify-between mb-4">
                          <div className="flex items-center flex-grow mr-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 text-gray-500 mr-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 text-gray-500 dark:text-gray-300 mr-2">
                               <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                             </svg>
                             <input
                               type="text"
                               placeholder="Search videos by title"
-                              className="border rounded px-3 py-1 text-sm w-full"
+                              className="border border-gray-300 dark:border-gray-600 rounded px-3 py-1 text-sm w-full bg-white text-gray-900 dark:bg-gray-800 dark:text-white dark:placeholder-gray-400"
                               value={videoSearchTerms[employer.id] || ''}
                               onChange={e => handleVideoSearchChange(employer.id, e.target.value)}
                             />
@@ -136,8 +136,8 @@ export default function ProfileExperience({ employers, onViewProjects }: Profile
                           {employer.videos && employer.videos.length > 0 && (
                             <div className="flex items-center space-x-4">
                               <div className="flex items-center">
-                                <label htmlFor={`sort-${employer.id}`} className="mr-2 text-gray-700 text-sm">Sort:</label>
-                                <select id={`sort-${employer.id}`} className="border rounded px-2 py-1 text-sm"
+                                <label htmlFor={`sort-${employer.id}`} className="mr-2 text-gray-700 dark:text-gray-300 text-sm">Sort:</label>
+                                <select id={`sort-${employer.id}`} className="border border-gray-300 dark:border-gray-600 rounded px-2 py-1 text-sm bg-white text-gray-900 dark:bg-gray-800 dark:text-white"
                                    value={videoSortCriteria[employer.id] || 'default'}
                                    onChange={e => handleVideoSortChange(employer.id, e.target.value)}
                                 >
@@ -148,8 +148,8 @@ export default function ProfileExperience({ employers, onViewProjects }: Profile
                                 </select>
                               </div>
                               <div className="flex items-center">
-                                <label htmlFor={`filter-${employer.id}`} className="mr-2 text-gray-700 text-sm">Filter:</label>
-                                <select id={`filter-${employer.id}`} className="border rounded px-2 py-1 text-sm"
+                                <label htmlFor={`filter-${employer.id}`} className="mr-2 text-gray-700 dark:text-gray-300 text-sm">Filter:</label>
+                                <select id={`filter-${employer.id}`} className="border border-gray-300 dark:border-gray-600 rounded px-2 py-1 text-sm bg-white text-gray-900 dark:bg-gray-800 dark:text-white"
                                    value={videoFilterCriteria[employer.id] || 'all'}
                                    onChange={e => handleVideoFilterChange(employer.id, e.target.value)}
                                 >
@@ -165,29 +165,29 @@ export default function ProfileExperience({ employers, onViewProjects }: Profile
                       </div>
                     )}
 
-                  <div className="flex items-center text-gray-500 text-xs mb-2">
+                  <div className="flex items-center text-gray-500 dark:text-gray-400 text-xs mb-2">
                      {employer.type && (
-                       <span className="mr-2 px-2 py-1 bg-gray-200 rounded-full text-gray-700">{employer.type}</span>
+                       <span className="mr-2 px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded-full text-gray-700 dark:text-gray-300 transition-colors duration-300">{employer.type}</span>
                      )}
                      {employer.projects !== undefined && (
-                        <span className="mr-2 px-2 py-1 bg-gray-200 rounded-full text-gray-700">{employer.projects} project{employer.projects !== 1 ? 's' : ''}</span>
+                        <span className="mr-2 px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded-full text-gray-700 dark:text-gray-300 transition-colors duration-300">{employer.projects} project{employer.projects !== 1 ? 's' : ''}</span>
                      )}
                       {employer.subscribers !== undefined && (
-                        <span className="mr-2 px-2 py-1 bg-gray-200 rounded-full text-gray-700">{formatCount(employer.subscribers)} Subs</span>
+                        <span className="mr-2 px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded-full text-gray-700 dark:text-gray-300 transition-colors duration-300">{formatCount(employer.subscribers)} Subs</span>
                       )}
-                     <span className="ml-auto text-gray-500">{employer.duration}</span>
+                     <span className="ml-auto text-gray-500 dark:text-gray-400">{employer.duration}</span>
                   </div>
-                  <p className="text-gray-700 mb-4">{employer.description}</p>
+                  <p className="text-gray-700 dark:text-gray-300 mb-4">{employer.description}</p>
 
                   {/* Related Videos */}
                   {filteredAndSortedVideos.length > 0 && (
                     <div className="mt-4">
-                      <h4 className="text-sm font-semibold text-gray-900 mb-2">Related Videos:</h4>
+                      <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">Related Videos:</h4>
                       <div className="flex flex-wrap gap-2">
                         {filteredAndSortedVideos.map((video, vIndex) => (
                           <span
                             key={vIndex} // Using index as key since video titles might not be unique without Project objects
-                            className="px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-sm"
+                            className="px-3 py-1 bg-gray-100 dark:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-full text-sm transition-colors duration-300"
                           >
                             {video}
                           </span>
