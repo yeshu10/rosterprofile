@@ -6,7 +6,6 @@ import ProfileSidebar from '@/components/ProfileSidebar';
 import ProfileAbout from '@/components/ProfileAbout';
 import ProfileExperience from '@/components/ProfileExperience';
 import ProfileDetails from '@/components/ProfileDetails';
-import ProfileSkills from '@/components/ProfileSkills';
 import type { PortfolioData, PortfolioParseResponse } from '@/types';
 import { mockProjects } from '@/data/mockProjects';
 import ProjectsModal from '@/components/modals/ProjectsModal';
@@ -112,21 +111,7 @@ export default function ProfilePage() {
 
           {/* My Details Section */}
           {basicInfo.myDetails && <ProfileDetails myDetails={basicInfo.myDetails} />}
-
-          {/* Skills Section */}
-          {basicInfo.myDetails?.skills && basicInfo.myDetails.skills.length > 0 && <ProfileSkills skills={basicInfo.myDetails.skills} />}
-
-          {/* Projects Section - Placeholder */}
-          <div id="projects" className="mt-8 text-gray-900 dark:text-gray-100">
-            <h2 className="text-2xl font-bold mb-4">Projects</h2>
-            <p>Projects section coming soon...</p>
-          </div>
-
-          {/* Content Section - Placeholder */}
-          <div id="content" className="mt-8 text-gray-900 dark:text-gray-100">
-            <h2 className="text-2xl font-bold mb-4">Content</h2>
-            <p>Content section coming soon...</p>
-          </div>
+         
         </div>
       </div>
 
