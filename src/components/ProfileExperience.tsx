@@ -109,7 +109,9 @@ export default function ProfileExperience({ employers, onViewProjects }: Profile
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-2xl font-bold text-gray-900 dark:text-white">My experience ({employers.length})</h2>
         {/* View My Projects Button - Keep for overall projects modal if needed */}
-        {/* <div>\n           <button onClick={onViewProjects} className="text-blue-600 dark:text-blue-400 hover:underline text-sm">View my projects</button>\n        </div> */}
+        <div>
+           <button onClick={onViewProjects} className="text-blue-600 dark:text-blue-400 hover:underline text-sm">View my projects</button>
+        </div>
       </div>
 
       {/* Experience List */}
