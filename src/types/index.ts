@@ -2,14 +2,28 @@ export interface BasicInfo {
   name: string;
   title: string;
   intro: string;
+  aboutMe: string;
   location: string;
   email: string;
   socialLinks: {
     github?: string;
     linkedin?: string;
-    twitter?: string;
+  };
+  myDetails: {
+    availability: string;
+    jobTypes: string[];
+    videoEditor: {
+      experienceLevel: string;
+      tools: string[];
+    };
+    contentVerticals: string[];
+    platformSpecialty: string[];
+    skills: string[];
+    software: string[];
+    languages: string[];
   };
 }
+
 
 export interface Experience {
   company: string;

@@ -16,33 +16,22 @@ export default function ProfilePage() {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        // In a real app, this would fetch from your database
-        // For now, we'll use the mock data
-        const mockData: PortfolioData = {
-          username: params.username as string,
-          basicInfo: {
-            name: "Test User",
-            title: "Software Developer",
-            intro: "Experienced developer with a passion for web technologies",
-            location: "New York, USA",
-            email: "test@example.com",
-            socialLinks: {
-              github: "https://github.com/testuser",
-              linkedin: "https://linkedin.com/in/testuser"
-            }
+        // Call the mock API endpoint
+        const response = await fetch(`/api/portfolio/parse`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
           },
-          experience: [
-            {
-              company: "Tech Corp",
-              position: "Senior Developer",
-              duration: "2020-Present",
-              description: "Leading development of web applications"
-            }
-          ],
-          skills: ["JavaScript", "React", "Node.js", "TypeScript"]
-        };
+          body: JSON.stringify({ url: `https://example.com/${params.username}` }),
+        });
 
-        setProfileData(mockData);
+        const result = await response.json();
+
+        if (!result.success || !result.data) {
+          throw new Error(result.message || 'Failed to load profile');
+        }
+
+        setProfileData(result.data);
       } catch (err) {
         setError('Failed to load profile');
         console.error('Error loading profile:', err);
