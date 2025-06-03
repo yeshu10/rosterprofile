@@ -11,13 +11,6 @@ export default function ProfileMenu({ activeMenu, onMenuItemClick }: ProfileMenu
     { id: 'content', label: 'Content' }
   ];
 
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
   const handleClick = (menuId: string) => {
     onMenuItemClick(menuId);
     // scrollToSection(menuId); // Re-enable when sections have IDs

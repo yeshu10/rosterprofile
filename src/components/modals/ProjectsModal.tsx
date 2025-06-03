@@ -3,6 +3,7 @@
 import { Fragment, useState, useMemo } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import type { Project } from '@/data/mockProjects';
+import Image from 'next/image';
 
 interface ProjectsModalProps {
   projects: Project[];
@@ -20,35 +21,35 @@ export default function ProjectsModal({ projects, onClose }: ProjectsModalProps)
 
   // Filter projects based on search term and platform
   const filteredProjects = useMemo(() => {
-    let result = projects;
+    const initialProjects = projects;
 
     // Filter by search term
-    if (searchTerm) {
-      result = result.filter(project =>
-        project.title.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
+    const searchedProjects = searchTerm
+      ? initialProjects.filter(project =>
+          project.title.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+      : initialProjects;
 
     // Filter by platform
-    if (filterCriteria !== 'all') {
-      result = result.filter(project => project.platform === filterCriteria);
-    }
+    const finalFilteredProjects = filterCriteria !== 'all'
+      ? searchedProjects.filter(project => project.platform === filterCriteria)
+      : searchedProjects;
 
-    return result;
+    return finalFilteredProjects;
   }, [projects, searchTerm, filterCriteria]);
 
   // Sort projects
   const sortedAndFilteredProjects = useMemo(() => {
-    let result = [...filteredProjects];
+    const initialFilteredProjects = [...filteredProjects];
 
     // Basic sorting (can be expanded)
     if (sortCriteria === 'views') {
-      result.sort((a, b) => (b.views || 0) - (a.views || 0));
+      initialFilteredProjects.sort((a, b) => (b.views || 0) - (a.views || 0));
     } else if (sortCriteria === 'likes') {
-      result.sort((a, b) => (b.likes || 0) - (a.likes || 0));
+      initialFilteredProjects.sort((a, b) => (b.likes || 0) - (a.likes || 0));
     }
 
-    return result;
+    return initialFilteredProjects;
   }, [filteredProjects, sortCriteria]);
 
   const visibleProjects = sortedAndFilteredProjects.slice(0, visibleProjectsCount);
@@ -169,9 +170,11 @@ export default function ProjectsModal({ projects, onClose }: ProjectsModalProps)
                   {visibleProjects.map((project) => (
                     <div key={project.id} className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden shadow-sm bg-white dark:bg-gray-700 transition-colors duration-300">
                        {/* Placeholder Image */}
-                      <img
+                      <Image
                         src={project.imageUrl || '/images/placeholder-project.jpg'} // Use project image or a placeholder
                         alt={project.title}
+                        width={400} // Specify appropriate width
+                        height={200} // Specify appropriate height
                         className="w-full h-40 object-cover"
                       />
                       <div className="p-4">
