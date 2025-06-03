@@ -8,6 +8,7 @@ export interface BasicInfo {
   socialLinks: {
     github?: string;
     linkedin?: string;
+    twitter?: string;
   };
   myDetails: {
     availability: string;
@@ -24,19 +25,25 @@ export interface BasicInfo {
   };
 }
 
-
 export interface Experience {
+  id: string;
   company: string;
   position: string;
   duration: string;
   description: string;
+  type?: string;
+  projects?: number;
+  subscribers?: number;
+  videos?: string[];
 }
 
 export interface PortfolioData {
   username: string;
   basicInfo: BasicInfo;
   experience: Experience[];
-  skills: string[];
+  isAvailable?: boolean;
+  followerCount?: number;
+  verifiedDate?: string;
 }
 
 export interface PortfolioParseResponse {

@@ -20,7 +20,7 @@ export default function ProfileMenu({ activeMenu, onMenuItemClick }: ProfileMenu
 
   const handleClick = (menuId: string) => {
     onMenuItemClick(menuId);
-    scrollToSection(menuId);
+    // scrollToSection(menuId); // Re-enable when sections have IDs
   };
 
   return (

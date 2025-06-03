@@ -2,103 +2,140 @@
 
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import type { PortfolioData } from '@/types';
 import ProfileSidebar from '@/components/ProfileSidebar';
 import ProfileAbout from '@/components/ProfileAbout';
 import ProfileExperience from '@/components/ProfileExperience';
+import ProfileDetails from '@/components/ProfileDetails';
+import ProfileSkills from '@/components/ProfileSkills';
+import type { PortfolioData, PortfolioParseResponse } from '@/types';
+import { mockProjects } from '@/data/mockProjects';
+import ProjectsModal from '@/components/modals/ProjectsModal';
 
 export default function ProfilePage() {
-  const params = useParams();
+  const { username } = useParams();
   const [profileData, setProfileData] = useState<PortfolioData | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [error, setError] = useState<string | null>(null);
+  const [isProjectsModalOpen, setIsProjectsModalOpen] = useState(false);
 
   useEffect(() => {
-    const fetchProfile = async () => {
+    const fetchProfileData = async () => {
       try {
-        // Call the mock API endpoint
-        const response = await fetch(`/api/portfolio/parse`, {
+        // Call the local mock API endpoint
+        const response = await fetch('/api/portfolio/parse', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ url: `https://example.com/${params.username}` }),
+          body: JSON.stringify({ url: `mockdata/${username}` }), // Use a mock URL format
         });
 
-        const result = await response.json();
+        if (!response.ok) {
+          throw new Error('Failed to fetch profile data');
+        }
 
+        const result: PortfolioParseResponse = await response.json();
+        
         if (!result.success || !result.data) {
-          throw new Error(result.message || 'Failed to load profile');
+          throw new Error(result.message || 'Failed to load profile data');
         }
 
         setProfileData(result.data);
       } catch (err) {
-        setError('Failed to load profile');
-        console.error('Error loading profile:', err);
+        setError((err as Error).message);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchProfile();
-  }, [params.username]);
+    fetchProfileData();
+  }, [username]);
+
+  // Function to handle menu item click and scroll
+  const handleMenuItemClick = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  // Function to handle projects modal
+  const handleViewProjects = () => {
+    setIsProjectsModalOpen(true);
+  };
+
+  const handleCloseProjectsModal = () => {
+    setIsProjectsModalOpen(false);
+  };
 
   if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-xl">Loading...</div>
-      </div>
-    );
+    return <div className="text-center mt-8">Loading...</div>;
   }
 
-  if (error || !profileData) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-xl text-red-500">{error || 'Profile not found'}</div>
-      </div>
-    );
+  if (error) {
+    return <div className="text-center mt-8 text-red-500">Error: {error}</div>;
   }
+
+  if (!profileData) {
+    return <div className="text-center mt-8">Profile not found.</div>;
+  }
+
+  // Destructure for easier access
+  const { basicInfo, experience, isAvailable, followerCount, verifiedDate } = profileData;
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="flex flex-col md:flex-row gap-8">
-          {/* Sidebar */}
-          <div className="w-full md:w-1/3">
-            <ProfileSidebar
-              basicInfo={profileData.basicInfo}
-              username={profileData.username}
-              onMenuItemClick={(menu) => console.log('Menu clicked:', menu)}
-            />
+    <div className="container mx-auto p-6">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        {/* Sidebar */}
+        <div className="md:col-span-1">
+          <ProfileSidebar
+            basicInfo={basicInfo}
+            username={username as string}
+            onMenuItemClick={handleMenuItemClick}
+            isOpenToWork={isAvailable}
+            subscribers={followerCount}
+            verifiedDate={verifiedDate}
+          />
+        </div>
+
+        {/* Main Content */}
+        <div className="md:col-span-3 space-y-8">
+          {/* About Section */}
+          <ProfileAbout basicInfo={basicInfo} />
+
+          {/* Experience Section */}
+          <ProfileExperience
+            employers={experience}
+            onViewProjects={handleViewProjects}
+          />
+
+          {/* My Details Section */}
+          {basicInfo.myDetails && <ProfileDetails myDetails={basicInfo.myDetails} />}
+
+          {/* Skills Section */}
+          {basicInfo.myDetails?.skills && basicInfo.myDetails.skills.length > 0 && <ProfileSkills skills={basicInfo.myDetails.skills} />}
+
+          {/* Projects Section - Placeholder */}
+          <div id="projects" className="mt-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Projects</h2>
+            <p className="text-gray-700">Projects section coming soon...</p>
           </div>
 
-          {/* Main Content */}
-          <div className="w-full md:w-2/3">
-            <div className="bg-white rounded-lg shadow p-6 mb-6">
-              <ProfileAbout basicInfo={profileData.basicInfo} />
-            </div>
-
-            <div className="bg-white rounded-lg shadow p-6">
-              <ProfileExperience employers={profileData.experience} />
-            </div>
-
-            {/* Skills Section */}
-            <div className="bg-white rounded-lg shadow p-6 mt-6">
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">Skills</h2>
-              <div className="flex flex-wrap gap-2">
-                {profileData.skills.map((skill, index) => (
-                  <span
-                    key={index}
-                    className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm"
-                  >
-                    {skill}
-                  </span>
-                ))}
-              </div>
-            </div>
+          {/* Content Section - Placeholder */}
+          <div id="content" className="mt-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Content</h2>
+            <p className="text-gray-700">Content section coming soon...</p>
           </div>
         </div>
       </div>
+
+      {/* Projects Modal */}
+      {isProjectsModalOpen && (
+        <ProjectsModal
+          projects={mockProjects}
+          onClose={handleCloseProjectsModal}
+        />
+      )}
     </div>
   );
 } 
