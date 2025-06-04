@@ -3,6 +3,7 @@
 import { useState, useMemo } from 'react';
 import type { Experience, Project } from '@/types';
 import Image from 'next/image';
+import ProjectDetailModal from '@/components/modals/ProjectDetailModal';
 
 interface ProfileExperienceProps {
   employers: Experience[];
@@ -22,6 +23,9 @@ export default function ProfileExperience({ employers, onViewProjects }: Profile
   const [visibleProjectsCounts, setVisibleProjectsCounts] = useState<Record<string, number>>({});
 
   const projectsPerRow = 3; // Number of projects to load per row
+
+  // State to manage the currently selected project for the detail modal
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
   // Initialize visible projects count for each experience on mount or when employers change
   useMemo(() => {
@@ -57,6 +61,16 @@ export default function ProfileExperience({ employers, onViewProjects }: Profile
       ...prevCounts,
       [id]: (prevCounts[id] || projectsPerRow) + projectsPerRow // Increase count by projectsPerRow
     }));
+  };
+
+  // Handler to open the project detail modal
+  const handleOpenProjectDetailModal = (project: Project) => {
+    setSelectedProject(project);
+  };
+
+  // Handler to close the project detail modal
+  const handleCloseProjectDetailModal = () => {
+    setSelectedProject(null);
   };
 
   // Helper to format subscriber/view/like count (e.g., 1.1M)
@@ -226,7 +240,11 @@ export default function ProfileExperience({ employers, onViewProjects }: Profile
                       <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-4">Projects:</h4>
                       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                         {visibleProjects.map((project) => (
-                          <div key={project.id} className="border border-gray-200 dark:border-gray-600 rounded-lg overflow-hidden shadow-sm bg-white dark:bg-gray-700 transition-colors duration-300">
+                          <div
+                            key={project.id}
+                            className="border border-gray-200 dark:border-gray-600 rounded-lg overflow-hidden shadow-sm bg-white dark:bg-gray-700 transition-colors duration-300 cursor-pointer"
+                            onClick={() => handleOpenProjectDetailModal(project)}
+                          >
                             <Image
                               src={project.imageUrl || '/images/placeholder-project.jpg'}
                               alt={project.title}
@@ -275,6 +293,8 @@ export default function ProfileExperience({ employers, onViewProjects }: Profile
           );
         })}
       </div>
+      {/* Render the ProjectDetailModal */}
+      <ProjectDetailModal project={selectedProject} onClose={handleCloseProjectDetailModal} />
     </div>
   );
 } 
