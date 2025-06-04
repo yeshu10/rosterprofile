@@ -26,6 +26,7 @@ export default function ProfileExperience({ employers, onViewProjects, onUpdateE
   // State to manage the employer modal
   const [isEmployerModalOpen, setIsEmployerModalOpen] = useState(false);
   const [selectedEmployer, setSelectedEmployer] = useState<Experience | undefined>();
+  const [visibleExperiencesCount, setVisibleExperiencesCount] = useState(2);
 
   const projectsPerRow = 3;
 
@@ -103,6 +104,10 @@ export default function ProfileExperience({ employers, onViewProjects, onUpdateE
     }
   };
 
+  const handleShowMoreExperiences = () => {
+    setVisibleExperiencesCount(employers.length);
+  };
+
   const formatCount = (count?: number) => {
     if (count === undefined) return '--';
     if (count >= 1000000) {
@@ -138,7 +143,7 @@ export default function ProfileExperience({ employers, onViewProjects, onUpdateE
       </div>
 
       <div className="space-y-4">
-        {employers.map((employer) => {
+        {employers.slice(0, visibleExperiencesCount).map((employer) => {
           const isExperienceOpen = openExperienceId === employer.id;
           const searchTerm = projectSearchTerms[employer.id] || '';
           const sortCriteria = projectSortCriteria[employer.id] || 'default';
@@ -248,7 +253,7 @@ export default function ProfileExperience({ employers, onViewProjects, onUpdateE
                                 value={filterCriteria}
                                 onChange={e => handleProjectFilterChange(employer.id, e.target.value)}
                               >
-                                <option value="all">All Platforms</option>
+                                <option value="all">Filter by</option>
                                 <option value="youtube">Youtube</option>
                                 <option value="instagram">Instagram</option>
                                 <option value="facebook">Facebook</option>
@@ -320,6 +325,15 @@ export default function ProfileExperience({ employers, onViewProjects, onUpdateE
             </div>
           );
         })}
+      </div>
+
+      <div className="text-center mt-4">
+        <button
+          onClick={handleShowMoreExperiences}
+          className="text-blue-600 hover:underline text-sm font-semibold"
+        >
+          Show more work experience
+        </button>
       </div>
 
       {/* Project Detail Modal */}
