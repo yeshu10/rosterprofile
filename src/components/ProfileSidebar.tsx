@@ -66,7 +66,6 @@ export default function ProfileSidebar({
         basicInfo={profileData.basicInfo}
         username={username}
         isOpenToWork={profileData.isAvailable}
-        onUpdateProfileImage={handleUpdateProfileImage} // Pass the Redux dispatch handler
       />
 
       <ProfileStats

@@ -8,14 +8,9 @@ import { setSelectedProject } from '@/lib/modalSlice'; // Import action
 
 import type { Project } from '@/types';
 
-// Remove props as state will be from Redux
-// interface ProjectDetailModalProps {
-//   project: Project | null;
-//   onClose: () => void;
-// }
 
 export default function ProjectDetailModal(/* Remove props */) {
-  // Get state and dispatch from Redux
+
   const { selectedProject: project } = useAppSelector(state => state.modal);
   const dispatch = useAppDispatch();
 
@@ -23,7 +18,7 @@ export default function ProjectDetailModal(/* Remove props */) {
   const isOpen = !!project;
 
   const handleClose = () => {
-    dispatch(setSelectedProject(null)); // Dispatch action to clear selected project on close
+    dispatch(setSelectedProject(null)); 
   };
 
   const formatCount = (count?: number) => {
@@ -64,12 +59,12 @@ export default function ProjectDetailModal(/* Remove props */) {
               leaveTo="opacity-0 scale-95"
             >
               <Dialog.Panel className="w-full max-w-lg transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-colors duration-300">
-                {/* Modal Header */}
+            
                 <div className="flex justify-between items-center mb-4">
                   <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900">
                     Project Details
                   </Dialog.Title>
-                  {/* Close Button */}
+                  
                   <button
                     type="button"
                     className="text-gray-400 hover:text-gray-600"
