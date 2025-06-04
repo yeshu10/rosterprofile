@@ -9,6 +9,7 @@ import Image from 'next/image';
 import { useAppSelector, useAppDispatch } from '@/lib/hooks';
 import { setVisibleExperiencesCount } from '@/lib/uiSlice';
 import { openProjectsModal, openEmployerModal, setSelectedProject } from '@/lib/modalSlice'; // Import necessary modal actions
+import type { RootState } from '@/lib/store';
 
 interface ProfileExperienceProps {
   employers: Experience[];
@@ -36,7 +37,7 @@ export default function ProfileExperience({
   const projectsPerRow = 3;
 
   // Use typed selector to access visibleExperiencesCount from Redux
-  const visibleExperiencesCount = useAppSelector(state => state.ui.visibleExperiencesCount);
+  const visibleExperiencesCount = useAppSelector((state: RootState) => state.ui.visibleExperiencesCount);
   // Get modal states from Redux (if needed in this component, though likely not for rendering)
   // const { isEmployerModalOpen, selectedEmployer, isProjectsModalOpen, selectedProject: reduxSelectedProject } = useAppSelector(state => state.modal);
   const dispatch = useAppDispatch(); // Use typed dispatch
@@ -75,8 +76,8 @@ export default function ProfileExperience({
 
   // Dispatch action to set selected project and open detail modal
   const handleOpenProjectDetailModal = (project: Project) => {
-      dispatch(setSelectedProject(project)); // Dispatch action to set selected project in Redux
-      // The ProjectDetailModal component watches the selectedProject state to open itself
+    dispatch(setSelectedProject(project)); // Dispatch action to set selected project in Redux
+    // The ProjectDetailModal component watches the selectedProject state to open itself
   };
 
   // Dispatch action to clear selected project and close detail modal (if needed, modal handles close based on state)
