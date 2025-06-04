@@ -3,8 +3,8 @@
 import { useEffect } from "react";
 import { useParams } from "next/navigation";
 import { useAppSelector, useAppDispatch } from '@/lib/hooks';
-import { setProfileData, setLoading, setError, updateExperience, updateBasicInfo, updateMyDetails } from '@/lib/profileSlice';
-import { openProjectsModal, closeProjectsModal, setSelectedProject, openEmployerModal, closeEmployerModal } from '@/lib/modalSlice';
+import { setProfileData, setLoading, setError, updateBasicInfo } from '@/lib/profileSlice';
+
 import { RootState } from '@/lib/store';
 
 import ProfileSidebar from "@/components/ProfileSidebar";
@@ -14,7 +14,7 @@ import ProfileDetails from "@/components/ProfileDetails";
 import ProjectsModal from "@/components/modals/ProjectsModal";
 import ProjectDetailModal from "@/components/modals/ProjectDetailModal";
 import EmployerModal from "@/components/modals/EmployerModal";
-import type { Experience, BasicInfo, Project } from '@/types';
+import type { BasicInfo} from '@/types';
 
 export default function ProfilePage() {
   const { username } = useParams();
@@ -22,7 +22,7 @@ export default function ProfilePage() {
 
   // Access state directly from useAppSelector and destructure
   const { profileData, loading, error } = useAppSelector((state: RootState) => state.profile);
-  const { isProjectsModalOpen, selectedProject, isEmployerModalOpen, selectedEmployer } = useAppSelector((state: RootState) => state.modal);
+
 
   useEffect(() => {
     const fetchProfileData = async () => {
@@ -54,27 +54,13 @@ export default function ProfilePage() {
     }
   };
 
-  // Function to handle projects modal - simply dispatches open action
-  const handleViewProjects = () => {
-    dispatch(openProjectsModal());
-  };
 
-  const handleCloseProjectsModal = () => {
-    dispatch(closeProjectsModal());
-  };
-
-  // Function to handle experience updates
-  const handleUpdateExperience = (updatedExperience: Experience[]) => {
-    dispatch(updateExperience(updatedExperience));
-  };
 
   const handleUpdateBasicInfo = (updatedInfo: BasicInfo) => {
       dispatch(updateBasicInfo(updatedInfo));
   };
 
-  const handleUpdateDetails = (updatedDetails: BasicInfo['myDetails']) => {
-      dispatch(updateMyDetails(updatedDetails));
-  };
+ 
 
   if (loading) {
     return <div className="text-center mt-8 text-gray-900">Loading...</div>;
@@ -96,7 +82,6 @@ export default function ProfilePage() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         <div className="md:col-span-1">
           <ProfileSidebar
-            basicInfo={basicInfo}
             username={username as string}
             onMenuItemClick={handleMenuItemClick}
             isOpenToWork={isAvailable}
@@ -106,29 +91,21 @@ export default function ProfilePage() {
           />
         </div>
         <div className="md:col-span-2">
-          <ProfileAbout basicInfo={basicInfo} />
+          <ProfileAbout  />
 
           <ProfileExperience
             employers={experience}
-            onUpdateExperience={handleUpdateExperience}
+         
           />
 
           {basicInfo.myDetails && (
-            <ProfileDetails
-              myDetails={basicInfo.myDetails}
-              onUpdateDetails={handleUpdateDetails}
-            />
+            <ProfileDetails   />
           )}
         </div>
       </div>
 
-      {/* Projects Modal - Controlled by Redux state, render unconditionally */}
       <ProjectsModal />
-
-      {/* Project Detail Modal - Controlled by Redux state, render unconditionally */}
       <ProjectDetailModal />
-
-      {/* Employer Modal - Controlled by Redux state, render unconditionally */}
       <EmployerModal />
     </div>
   );

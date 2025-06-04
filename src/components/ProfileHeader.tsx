@@ -1,15 +1,20 @@
 "use client";
 
-import type { BasicInfo } from '@/types';
-import Image from 'next/image';
+import { useSelector } from "react-redux";
+import type { RootState } from "@/lib/store";
+import Image from "next/image";
 
-interface ProfileHeaderProps {
-  basicInfo: BasicInfo;
-  username: string;
-  isOpenToWork?: boolean;
-}
+export default function ProfileHeader() {
+  const basicInfo = useSelector(
+    (state: RootState) => state.profile.profileData?.basicInfo
+  );
+  const username = useSelector(
+    (state: RootState) => state.profile.profileData?.username
+  );
+  const isOpenToWork = true; 
 
-export default function ProfileHeader({ basicInfo, username, isOpenToWork = false }: ProfileHeaderProps) {
+  if (!basicInfo || !username) return null;
+
   return (
     <div className="text-center mb-6">
       <div className="relative w-32 h-32 mx-auto mb-4">

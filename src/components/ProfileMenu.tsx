@@ -14,7 +14,7 @@ export default function ProfileMenu({ activeMenu, onMenuItemClick }: ProfileMenu
 
   const handleClick = (menuId: string) => {
     onMenuItemClick(menuId);
-    // scrollToSection(menuId); // Re-enable when sections have IDs
+    
   };
 
   return (
@@ -28,8 +28,8 @@ export default function ProfileMenu({ activeMenu, onMenuItemClick }: ProfileMenu
               className={`w-full text-left px-3 py-2 rounded-md transition-colors duration-200
                 ${
                   activeMenu === item.id
-                    ? 'bg-blue-100 text-blue-800 dark:text-white font-semibold'
-                    : ' dark:text-gray-300 hover:bg-gray-100 '
+                    ? 'bg-blue-100 text-blue-800  font-semibold'
+                    : 'hover:bg-gray-100 '
                 }`}
             >
               {item.label}
