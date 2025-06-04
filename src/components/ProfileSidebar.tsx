@@ -45,8 +45,7 @@ export default function ProfileSidebar({
 
   return (
     <div className="bg-white text-gray-900 rounded-lg shadow p-6">
-      <ProfileHeader
-      />
+      <ProfileHeader />
 
       <ProfileStats
         location={profileData.basicInfo.location} 
