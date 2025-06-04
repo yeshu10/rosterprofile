@@ -78,6 +78,18 @@ export default function ProfilePage() {
     }
   };
 
+  const handleUpdateDetails = (updatedDetails: BasicInfo['myDetails']) => {
+    if (profileData) {
+      setProfileData(prev => ({
+        ...prev,
+        basicInfo: {
+          ...prev.basicInfo,
+          myDetails: updatedDetails
+        }
+      }));
+    }
+  };
+
   if (loading) {
     return <div className="text-center mt-8 text-gray-900 dark:text-gray-100">Loading...</div>;
   }
@@ -121,7 +133,12 @@ export default function ProfilePage() {
           />
 
           {/* My Details Section */}
-          {basicInfo.myDetails && <ProfileDetails myDetails={basicInfo.myDetails} />}
+          {basicInfo.myDetails && (
+            <ProfileDetails 
+              myDetails={basicInfo.myDetails} 
+              onUpdateDetails={handleUpdateDetails}
+            />
+          )}
          
         </div>
       </div>
