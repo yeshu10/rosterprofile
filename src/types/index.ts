@@ -31,9 +31,11 @@ export interface Experience {
   position: string;
   duration: string;
   description: string;
-  type?: string;
+  type: 'Full-time' | 'Part-time' | 'Contract' | 'Freelance';
   projects?: Project[];
   subscribers?: number;
+  startDate?: string;
+  endDate?: string;
 }
 
 export interface Project {

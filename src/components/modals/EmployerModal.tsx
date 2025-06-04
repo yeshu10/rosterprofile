@@ -16,13 +16,20 @@ export default function EmployerModal({ isOpen, onClose, onSubmit, initialData }
     company: initialData?.company || '',
     position: initialData?.position || '',
     duration: initialData?.duration || '',
-    type: initialData?.type || 'Full-time',
     description: initialData?.description || '',
+    type: initialData?.type || 'Full-time',
+    startDate: initialData?.startDate || '',
+    endDate: initialData?.endDate || '',
   });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit(formData);
+    // Format the duration string from start and end dates
+    const formattedDuration = `${formData.startDate} - ${formData.endDate || 'Present'}`;
+    onSubmit({
+      ...formData,
+      duration: formattedDuration
+    });
     onClose();
   };
 
@@ -92,19 +99,32 @@ export default function EmployerModal({ isOpen, onClose, onSubmit, initialData }
                   </div>
 
                   {/* Duration */}
-                  <div>
-                    <label htmlFor="duration" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                      Duration
-                    </label>
-                    <input
-                      type="text"
-                      id="duration"
-                      value={formData.duration}
-                      onChange={(e) => setFormData({ ...formData, duration: e.target.value })}
-                      placeholder="e.g., Jan 2023 - Present"
-                      className="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:text-white sm:text-sm"
-                      required
-                    />
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label htmlFor="startDate" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        Start Date
+                      </label>
+                      <input
+                        type="date"
+                        id="startDate"
+                        value={formData.startDate}
+                        onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
+                        className="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="endDate" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        End Date
+                      </label>
+                      <input
+                        type="date"
+                        id="endDate"
+                        value={formData.endDate}
+                        onChange={(e) => setFormData({ ...formData, endDate: e.target.value })}
+                        className="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                      />
+                    </div>
                   </div>
 
                   {/* Employment Type */}
