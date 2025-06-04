@@ -8,6 +8,39 @@ interface ProfileDetailsProps {
   onUpdateDetails?: (updatedDetails: BasicInfo['myDetails']) => void;
 }
 
+const AVAILABILITY_OPTIONS = [
+  'Full-time',
+  'Part-time',
+  'Contract',
+  'Freelance',
+  'Available for hire',
+  'Not available',
+  'Available for projects',
+  'Available for consultations',
+  'Available for mentoring',
+  'Available for speaking',
+  'Available for workshops',
+  'Available for training',
+  'Available for collaborations',
+  'Available for partnerships',
+  'Available for advisory',
+  'Available for board positions',
+  'Available for remote work',
+  'Available for on-site work',
+  'Available for hybrid work',
+  'Available for short-term projects',
+  'Available for long-term projects',
+  'Available for emergency projects',
+  'Available for weekend work',
+  'Available for evening work',
+  'Available for early morning work',
+  'Available for international projects',
+  'Available for local projects',
+  'Available for startup projects',
+  'Available for enterprise projects',
+  'Available for non-profit projects'
+];
+
 export default function ProfileDetails({ myDetails, onUpdateDetails }: ProfileDetailsProps) {
   const [showAllDetails, setShowAllDetails] = useState(false);
   const [isEditingJobTypes, setIsEditingJobTypes] = useState(false);
@@ -16,6 +49,7 @@ export default function ProfileDetails({ myDetails, onUpdateDetails }: ProfileDe
   const [isEditingSkills, setIsEditingSkills] = useState(false);
   const [isEditingSoftware, setIsEditingSoftware] = useState(false);
   const [isEditingLanguages, setIsEditingLanguages] = useState(false);
+  const [isEditingAvailability, setIsEditingAvailability] = useState(false);
   
   const [newJobType, setNewJobType] = useState('');
   const [newContent, setNewContent] = useState('');
@@ -23,6 +57,7 @@ export default function ProfileDetails({ myDetails, onUpdateDetails }: ProfileDe
   const [newSkill, setNewSkill] = useState('');
   const [newSoftware, setNewSoftware] = useState('');
   const [newLanguage, setNewLanguage] = useState('');
+  const [newAvailability, setNewAvailability] = useState('');
 
   const jobTypesRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -30,6 +65,7 @@ export default function ProfileDetails({ myDetails, onUpdateDetails }: ProfileDe
   const skillsRef = useRef<HTMLDivElement>(null);
   const softwareRef = useRef<HTMLDivElement>(null);
   const languagesRef = useRef<HTMLDivElement>(null);
+  const availabilityRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -50,6 +86,9 @@ export default function ProfileDetails({ myDetails, onUpdateDetails }: ProfileDe
       }
       if (languagesRef.current && !languagesRef.current.contains(event.target as Node)) {
         setIsEditingLanguages(false);
+      }
+      if (availabilityRef.current && !availabilityRef.current.contains(event.target as Node)) {
+        setIsEditingAvailability(false);
       }
     };
 
@@ -120,6 +159,16 @@ export default function ProfileDetails({ myDetails, onUpdateDetails }: ProfileDe
           break;
       }
       onUpdateDetails(updatedDetails);
+    }
+  };
+
+  const handleAvailabilityChange = (value: string) => {
+    if (onUpdateDetails) {
+      onUpdateDetails({
+        ...myDetails,
+        availability: value
+      });
+      setIsEditingAvailability(false);
     }
   };
 
@@ -204,8 +253,37 @@ export default function ProfileDetails({ myDetails, onUpdateDetails }: ProfileDe
       <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">My Details</h2>
       {myDetails && (
         <div className="space-y-4 text-gray-700 dark:text-gray-300">
-          {/* Always visible details */}
-          {myDetails.availability && <p><span className="font-medium">Availability:</span> {myDetails.availability}</p>}
+          {/* Availability */}
+          <div ref={availabilityRef} className="relative">
+            <div className="flex justify-between items-center mb-2">
+              <span className="font-medium">Availability:</span>
+              <button
+                onClick={() => setIsEditingAvailability(!isEditingAvailability)}
+                className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                </svg>
+              </button>
+            </div>
+            {!isEditingAvailability ? (
+              <p>{myDetails.availability}</p>
+            ) : (
+              <div className="relative">
+                <select
+                  value={myDetails.availability}
+                  onChange={(e) => handleAvailabilityChange(e.target.value)}
+                  className="w-64 rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:text-white text-sm"
+                >
+                  {AVAILABILITY_OPTIONS.map(option => (
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
+          </div>
 
           {/* Job Types */}
           {renderEditableSection(
