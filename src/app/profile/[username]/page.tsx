@@ -6,7 +6,7 @@ import ProfileSidebar from '@/components/ProfileSidebar';
 import ProfileAbout from '@/components/ProfileAbout';
 import ProfileExperience from '@/components/ProfileExperience';
 import ProfileDetails from '@/components/ProfileDetails';
-import type { PortfolioData, PortfolioParseResponse } from '@/types';
+import type { PortfolioData, PortfolioParseResponse, Experience } from '@/types';
 import { mockProjects } from '@/data/mockProjects';
 import ProjectsModal from '@/components/modals/ProjectsModal';
 
@@ -68,6 +68,16 @@ export default function ProfilePage() {
     setIsProjectsModalOpen(false);
   };
 
+  // Function to handle experience updates
+  const handleUpdateExperience = (updatedExperience: Experience[]) => {
+    if (profileData) {
+      setProfileData({
+        ...profileData,
+        experience: updatedExperience
+      });
+    }
+  };
+
   if (loading) {
     return <div className="text-center mt-8 text-gray-900 dark:text-gray-100">Loading...</div>;
   }
@@ -107,6 +117,7 @@ export default function ProfilePage() {
           <ProfileExperience
             employers={experience}
             onViewProjects={handleViewProjects}
+            onUpdateExperience={handleUpdateExperience}
           />
 
           {/* My Details Section */}

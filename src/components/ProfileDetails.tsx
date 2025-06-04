@@ -23,7 +23,7 @@ export default function ProfileDetails({ myDetails }: ProfileDetailsProps) {
           {myDetails.availability && <p><span className="font-medium">Availability:</span> {myDetails.availability}</p>}
 
           {myDetails.jobTypes && myDetails.jobTypes.length > 0 && (
-            <div>
+            <div id="jobtype">
               <span className="font-medium block mb-2">Job Types:</span>
               <div className="flex flex-wrap gap-2">
                 {myDetails.jobTypes.map(type => (
@@ -36,7 +36,7 @@ export default function ProfileDetails({ myDetails }: ProfileDetailsProps) {
           )}
 
           {myDetails.contentVerticals && myDetails.contentVerticals.length > 0 && (
-            <div>
+            <div id="content">
               <span className="font-medium block mb-2">Content Verticals:</span>
               <div className="flex flex-wrap gap-2">
                 {myDetails.contentVerticals.map(vertical => (

@@ -8,7 +8,8 @@ export default function ProfileMenu({ activeMenu, onMenuItemClick }: ProfileMenu
     { id: 'about', label: 'About' },
     { id: 'experience', label: 'Worked With' },
     { id: 'projects', label: 'Projects' },
-    { id: 'content', label: 'Content' }
+     { id: 'content', label: 'Content Verticals' },
+    { id: 'jobtype', label: 'Job Types & Pricing' }
   ];
 
   const handleClick = (menuId: string) => {
