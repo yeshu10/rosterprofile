@@ -117,11 +117,11 @@ export default function ProfileExperience({ employers, onViewProjects, onUpdateE
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Experience</h2>
+        <h2 className="text-2xl font-bold text-gray-900 ">Experience</h2>
         <div className="flex items-center space-x-4">
           <button
             onClick={onViewProjects}
-            className="text-blue-600 dark:text-blue-400 hover:underline text-sm font-semibold"
+            className="text-blue-600  hover:underline text-sm font-semibold"
           >
             View Projects
           </button>
@@ -164,21 +164,21 @@ export default function ProfileExperience({ employers, onViewProjects, onUpdateE
           return (
             <div
               key={employer.id}
-              className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden"
+              className="border border-gray-200  rounded-lg overflow-hidden"
             >
               <div className="p-4">
                 <div className="flex justify-between items-start">
                   <div>
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                    <h3 className="text-lg font-semibold text-gray-900 ">
                       {employer.company}
                     </h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">{employer.position}</p>
-                    <p className="text-sm text-gray-500 dark:text-gray-500">{employer.duration}</p>
+                    <p className="text-sm text-gray-600 ">{employer.position}</p>
+                    <p className="text-sm text-gray-500 ">{employer.duration}</p>
                   </div>
                   <div className="flex items-center space-x-2">
                     <button
                       onClick={() => handleOpenEmployerModal(employer)}
-                      className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                      className="text-gray-400 hover:text-gray-600 "
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -186,7 +186,7 @@ export default function ProfileExperience({ employers, onViewProjects, onUpdateE
                     </button>
                     <button
                       onClick={() => toggleExperience(employer.id)}
-                      className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                      className="text-gray-400 hover:text-gray-600 "
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -203,23 +203,23 @@ export default function ProfileExperience({ employers, onViewProjects, onUpdateE
 
                 {isExperienceOpen && (
                   <div className="mt-4 space-y-4">
-                    <p className="text-sm text-gray-600 dark:text-gray-400">{employer.description}</p>
+                    <p className="text-sm text-gray-600 ">{employer.description}</p>
 
                     {/* Projects Section */}
                     {visibleProjects.length > 0 && (
                       <div className="mt-4">
-                        <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-4">Projects:</h4>
+                        <h4 className="text-sm font-semibold text-gray-900 mb-4">Projects:</h4>
                         
                         {/* Search, Sort, Filter Controls */}
                         <div className="flex items-center justify-between mb-4">
-                          <div className="flex items-center flex-grow mr-4 border border-gray-300 dark:border-gray-600 rounded px-3 py-1">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 text-gray-500 dark:text-gray-300 mr-2">
+                          <div className="flex items-center flex-grow mr-4 border border-gray-300  rounded px-3 py-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 text-gray-500  mr-2">
                               <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                             </svg>
                             <input
                               type="text"
                               placeholder="Search projects by title"
-                              className="flex-grow outline-none text-sm bg-white text-gray-900 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
+                              className="flex-grow outline-none text-sm bg-white text-gray-900"
                               value={searchTerm}
                               onChange={e => handleProjectSearchChange(employer.id, e.target.value)}
                             />
@@ -229,7 +229,7 @@ export default function ProfileExperience({ employers, onViewProjects, onUpdateE
                             {/* Sort */}
                             <div className="relative">
                               <select
-                                className="appearance-none border border-gray-300 dark:border-gray-600 rounded px-3 py-1 text-sm text-gray-700 dark:text-gray-300 leading-tight focus:outline-none focus:shadow-outline pr-8 bg-white dark:bg-gray-700"
+                                className="appearance-none border border-gray-300 rounded px-3 py-1 text-sm text-gray-700  leading-tight focus:outline-none focus:shadow-outline pr-8 bg-white "
                                 value={sortCriteria}
                                 onChange={e => handleProjectSortChange(employer.id, e.target.value)}
                               >
@@ -237,14 +237,14 @@ export default function ProfileExperience({ employers, onViewProjects, onUpdateE
                                 <option value="views">Views</option>
                                 <option value="likes">Likes</option>
                               </select>
-                              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 dark:text-gray-300">
+                              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 ">
                                 <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 6.757 7.586 5.343 9l4.95 4.95z" /></svg>
                               </div>
                             </div>
                             {/* Filter */}
                             <div className="relative">
                               <select
-                                className="appearance-none border border-gray-300 dark:border-gray-600 rounded px-3 py-1 text-sm text-gray-700 dark:text-gray-300 leading-tight focus:outline-none focus:shadow-outline pr-8 bg-white dark:bg-gray-700"
+                                className="appearance-none border border-gray-300 rounded px-3 py-1 text-sm text-gray-700  leading-tight focus:outline-none focus:shadow-outline pr-8 bg-white "
                                 value={filterCriteria}
                                 onChange={e => handleProjectFilterChange(employer.id, e.target.value)}
                               >
@@ -254,7 +254,7 @@ export default function ProfileExperience({ employers, onViewProjects, onUpdateE
                                 <option value="facebook">Facebook</option>
                                 <option value="tiktok">Tiktok</option>
                               </select>
-                              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 dark:text-gray-300">
+                              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 ">
                                 <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 6.757 7.586 5.343 9l4.95 4.95z" /></svg>
                               </div>
                             </div>
@@ -265,7 +265,7 @@ export default function ProfileExperience({ employers, onViewProjects, onUpdateE
                           {visibleProjects.map((project) => (
                             <div
                               key={project.id}
-                              className="border border-gray-200 dark:border-gray-600 rounded-lg overflow-hidden shadow-sm bg-white dark:bg-gray-700 transition-colors duration-300 cursor-pointer"
+                              className="border border-gray-200  rounded-lg overflow-hidden shadow-sm bg-white  transition-colors duration-300 cursor-pointer"
                               onClick={() => handleOpenProjectDetailModal(project)}
                             >
                               <Image
@@ -276,13 +276,13 @@ export default function ProfileExperience({ employers, onViewProjects, onUpdateE
                                 className="w-full h-32 object-cover"
                               />
                               <div className="p-4">
-                                <h5 className="text-sm font-medium text-gray-900 dark:text-white mb-1">
+                                <h5 className="text-sm font-medium text-gray-900  mb-1">
                                   {project.title}
                                 </h5>
-                                <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">
+                                <p className="text-xs text-gray-500  mb-2">
                                   {project.description}
                                 </p>
-                                <div className="flex items-center text-xs text-gray-500 dark:text-gray-400">
+                                <div className="flex items-center text-xs text-gray-500 ">
                                   <span className="flex items-center mr-3">
                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -306,7 +306,7 @@ export default function ProfileExperience({ employers, onViewProjects, onUpdateE
                           <div className="mt-4 text-center">
                             <button
                               onClick={() => handleLoadMoreProjects(employer.id)}
-                              className="text-blue-600 dark:text-blue-400 hover:underline text-sm font-semibold"
+                              className="text-blue-600  hover:underline text-sm font-semibold"
                             >
                               Load more projects
                             </button>

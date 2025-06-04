@@ -59,10 +59,10 @@ export default function EmployerModal({ isOpen, onClose, onSubmit, initialData }
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white dark:bg-gray-800 p-6 text-left align-middle shadow-xl transition-all">
+              <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white  p-6 text-left align-middle shadow-xl transition-all">
                 <Dialog.Title
                   as="h3"
-                  className="text-lg font-medium leading-6 text-gray-900 dark:text-white mb-4"
+                  className="text-lg font-medium leading-6 text-gray-900  mb-4"
                 >
                   {initialData ? 'Edit Employer/Client' : 'Add Employer/Client'}
                 </Dialog.Title>
@@ -70,7 +70,7 @@ export default function EmployerModal({ isOpen, onClose, onSubmit, initialData }
                 <form onSubmit={handleSubmit} className="space-y-4">
                   {/* Company Name */}
                   <div>
-                    <label htmlFor="company" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                    <label htmlFor="company" className="block text-sm font-medium text-gray-700 ">
                       Company/Client Name
                     </label>
                     <input
@@ -78,14 +78,14 @@ export default function EmployerModal({ isOpen, onClose, onSubmit, initialData }
                       id="company"
                       value={formData.company}
                       onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                      className="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                      className="mt-1 block w-full rounded-md border-gray-300  shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                       required
                     />
                   </div>
 
                   {/* Job Title */}
                   <div>
-                    <label htmlFor="position" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                    <label htmlFor="position" className="block text-sm font-medium text-gray-700">
                       Job Title
                     </label>
                     <input
@@ -93,7 +93,7 @@ export default function EmployerModal({ isOpen, onClose, onSubmit, initialData }
                       id="position"
                       value={formData.position}
                       onChange={(e) => setFormData({ ...formData, position: e.target.value })}
-                      className="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                      className="mt-1 block w-full rounded-md border-gray-300  shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                       required
                     />
                   </div>
@@ -101,7 +101,7 @@ export default function EmployerModal({ isOpen, onClose, onSubmit, initialData }
                   {/* Duration */}
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label htmlFor="startDate" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                      <label htmlFor="startDate" className="block text-sm font-medium text-gray-700">
                         Start Date
                       </label>
                       <input
@@ -109,12 +109,12 @@ export default function EmployerModal({ isOpen, onClose, onSubmit, initialData }
                         id="startDate"
                         value={formData.startDate}
                         onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
-                        className="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                        className="mt-1 block w-full rounded-md border-gray-300  shadow-sm focus:border-blue-500 focus:ring-blue-500  sm:text-sm"
                         required
                       />
                     </div>
                     <div>
-                      <label htmlFor="endDate" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                      <label htmlFor="endDate" className="block text-sm font-medium text-gray-700 ">
                         End Date
                       </label>
                       <input
@@ -122,21 +122,21 @@ export default function EmployerModal({ isOpen, onClose, onSubmit, initialData }
                         id="endDate"
                         value={formData.endDate}
                         onChange={(e) => setFormData({ ...formData, endDate: e.target.value })}
-                        className="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                        className="mt-1 block w-full rounded-md border-gray-300  shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                       />
                     </div>
                   </div>
 
                   {/* Employment Type */}
                   <div>
-                    <label htmlFor="type" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                    <label htmlFor="type" className="block text-sm font-medium text-gray-700 ">
                       Employment Type
                     </label>
                     <select
                       id="type"
                       value={formData.type}
                       onChange={(e) => setFormData({ ...formData, type: e.target.value })}
-                      className="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                      className="mt-1 block w-full rounded-md border-gray-300  shadow-sm focus:border-blue-500 focus:ring-blue-500  sm:text-sm"
                       required
                     >
                       <option value="Full-time">Full-time</option>
@@ -148,7 +148,7 @@ export default function EmployerModal({ isOpen, onClose, onSubmit, initialData }
 
                   {/* Description */}
                   <div>
-                    <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                    <label htmlFor="description" className="block text-sm font-medium text-gray-700">
                       Description
                     </label>
                     <textarea
@@ -156,7 +156,7 @@ export default function EmployerModal({ isOpen, onClose, onSubmit, initialData }
                       value={formData.description}
                       onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                       rows={4}
-                      className="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                       required
                     />
                   </div>
@@ -166,7 +166,7 @@ export default function EmployerModal({ isOpen, onClose, onSubmit, initialData }
                     <button
                       type="button"
                       onClick={onClose}
-                      className="inline-flex justify-center rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                      className="inline-flex justify-center rounded-md border border-gray-300  bg-white  px-4 py-2 text-sm font-medium text-gray-700  hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                     >
                       Cancel
                     </button>

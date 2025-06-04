@@ -18,8 +18,8 @@ export default function ProfileMenu({ activeMenu, onMenuItemClick }: ProfileMenu
   };
 
   return (
-    <div className="border border-gray-300 dark:border-gray-600 rounded-lg p-4 bg-white dark:bg-gray-800 shadow-sm">
-      <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">QUICK MENU</h3>
+    <div className="border border-gray-300  rounded-lg p-4 bg-white shadow-sm">
+      <h3 className="text-lg font-bold text-gray-900  mb-4">QUICK MENU</h3>
       <ul>
         {menuItems.map((item) => (
           <li key={item.id} className="mb-2">
@@ -28,8 +28,8 @@ export default function ProfileMenu({ activeMenu, onMenuItemClick }: ProfileMenu
               className={`w-full text-left px-3 py-2 rounded-md transition-colors duration-200
                 ${
                   activeMenu === item.id
-                    ? 'bg-blue-100 dark:bg-blue-700 text-blue-800 dark:text-white font-semibold'
-                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                    ? 'bg-blue-100 text-blue-800 dark:text-white font-semibold'
+                    : ' dark:text-gray-300 hover:bg-gray-100 '
                 }`}
             >
               {item.label}

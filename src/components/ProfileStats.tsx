@@ -6,7 +6,7 @@ interface ProfileStatsProps {
 
 export default function ProfileStats({ location, subscribers, verifiedDate }: ProfileStatsProps) {
   return (
-    <div className="border border-gray-300 dark:border-gray-600 rounded-lg p-4 bg-white dark:bg-gray-800 shadow-sm mb-6">
+    <div className="border border-gray-300  rounded-lg p-4 bg-white   shadow-sm mb-6">
       <div className="space-y-2">
         {verifiedDate && (
           <div className="flex items-center text-gray-600 text-sm">
