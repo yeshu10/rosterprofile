@@ -4,7 +4,6 @@ import ProfileHeader from './ProfileHeader';
 import ProfileStats from './ProfileStats';
 import ProfileMenu from './ProfileMenu';
 import { useAppSelector, useAppDispatch } from '@/lib/hooks'; 
-import { updateBasicInfo } from '@/lib/profileSlice'; 
 import { setActiveMenu } from '@/lib/uiSlice';
 import type { RootState } from '@/lib/store';
 
@@ -14,7 +13,7 @@ interface ProfileSidebarProps {
 }
 
 export default function ProfileSidebar({ 
-  username,
+
   onMenuItemClick,
   
 }: ProfileSidebarProps) {
@@ -30,14 +29,7 @@ export default function ProfileSidebar({
     onMenuItemClick(menu);
   };
 
-  const handleUpdateProfileImage = (imageUrl: string) => {
-    if (profileData?.basicInfo) {
-      dispatch(updateBasicInfo({ 
-        ...profileData.basicInfo,
-        profileImage: imageUrl
-      }));
-    }
-  };
+
 
   if (!profileData?.basicInfo) {
       return null; // Or a loading spinner

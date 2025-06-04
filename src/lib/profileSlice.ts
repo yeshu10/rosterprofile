@@ -33,7 +33,8 @@ export const addExperience = createAsyncThunk(
       }
 
       return data.data.experience;
-    } catch (error) {
+    } catch (err) {
+      console.error("Error fetching portfolio:", err);
       return rejectWithValue('Failed to add experience');
     }
   }
@@ -57,7 +58,8 @@ export const updateExperience = createAsyncThunk(
       }
 
       return data.data.experience;
-    } catch (error) {
+    } catch (err) {
+      console.error("Error fetching portfolio:", err);
       return rejectWithValue('Failed to update experience');
     }
   }

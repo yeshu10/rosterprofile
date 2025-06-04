@@ -3,13 +3,13 @@
 import { Fragment, useState, useMemo } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import Image from 'next/image';
-import { useAppSelector, useAppDispatch } from '@/lib/hooks'; // Import typed hooks
-import { closeProjectsModal, setSelectedProject } from '@/lib/modalSlice'; // Import actions
-import type { Project } from '@/types';
+import { useAppSelector, useAppDispatch } from '@/lib/hooks'; 
+import { closeProjectsModal } from '@/lib/modalSlice'; 
+
 
 export default function ProjectsModal() {
   // Get state and dispatch from Redux
-  const { isProjectsModalOpen, selectedProject } = useAppSelector(state => state.modal);
+  const { isProjectsModalOpen } = useAppSelector(state => state.modal);
   const projects = useAppSelector(state => state.profile.profileData?.experience.flatMap(emp => emp.projects || []) || []); // Get projects from profile state
   const dispatch = useAppDispatch();
 
@@ -19,7 +19,7 @@ export default function ProjectsModal() {
   const [searchTerm, setSearchTerm] = useState('');
   const [sortCriteria, setSortCriteria] = useState('default'); // e.g., 'default', 'views', 'likes'
   const [filterCriteria, setFilterCriteria] = useState('all'); // e.g., 'all', 'youtube'
-  const [visibleProjectsCounts, setVisibleProjectsCounts] = useState<Record<string, number>>({}); // Keep local for now
+  // const [visibleProjectsCounts, setVisibleProjectsCounts] = useState<Record<string, number>>({});
 
   // Filter projects based on search term and platform
   const filteredProjects = useMemo(() => {
@@ -58,18 +58,16 @@ export default function ProjectsModal() {
   const hasMoreProjects = initialVisibleProjects < sortedAndFilteredProjects.length;
 
   const handleLoadMoreProjects = () => {
-    // If using a single count for the modal
-    // setVisibleProjectsCounts(prevCounts => ({ all: (prevCounts.all || projectsPerRow) + projectsPerRow }));
-    // If showing all projects, this function might not be needed or needs rethinking
+
   };
 
-  const handleOpenProjectDetailModal = (project: Project) => {
-    dispatch(setSelectedProject(project)); // Dispatch action to set selected project in modal slice
-  };
+  // const handleOpenProjectDetailModal = (project: Project) => {
+  //   dispatch(setSelectedProject(project)); // Dispatch action to set selected project in modal slice
+  // };
 
-  const handleCloseProjectDetailModal = () => {
-    dispatch(setSelectedProject(null)); // Dispatch action to clear selected project
-  };
+  // const handleCloseProjectDetailModal = () => {
+  //   dispatch(setSelectedProject(null)); // Dispatch action to clear selected project
+  // };
 
   const handleCloseModal = () => {
     dispatch(closeProjectsModal()); // Dispatch close action
@@ -230,7 +228,6 @@ export default function ProjectsModal() {
                   </div>
                 )}
 
-                 {/* Original Close Button - Remove later */}
                 {/* <div className="mt-4">
                   <button
                     type="button"
