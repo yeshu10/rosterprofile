@@ -1,16 +1,10 @@
 "use client";
 
-import type { BasicInfo } from '@/types';
 import { useState, useRef, useEffect } from 'react';
 import { useAppSelector, useAppDispatch } from '@/lib/hooks';
 import { updateMyDetails } from '@/lib/profileSlice';
 
-interface ProfileDetailsProps {
-  // Remove myDetails prop as it will be read from Redux
-  // myDetails: BasicInfo['myDetails'];
-  // Remove onUpdateDetails prop as logic will dispatch action
-  // onUpdateDetails?: (updatedDetails: BasicInfo['myDetails']) => void;
-}
+
 
 const AVAILABILITY_OPTIONS = [
   'Full-time',
@@ -45,7 +39,7 @@ const AVAILABILITY_OPTIONS = [
   'Available for non-profit projects'
 ];
 
-export default function ProfileDetails(/* Remove props */) {
+export default function ProfileDetails() {
   const [showAllDetails, setShowAllDetails] = useState(false);
   const [isEditingJobTypes, setIsEditingJobTypes] = useState(false);
   const [isEditingContent, setIsEditingContent] = useState(false);

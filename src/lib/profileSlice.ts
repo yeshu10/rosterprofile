@@ -5,15 +5,16 @@ interface ProfileState {
   profileData: PortfolioData | null;
   loading: boolean;
   error: string | null;
+   url: string; 
 }
 
 const initialState: ProfileState = {
   profileData: null,
   loading: false,
   error: null,
-};
+  url: "", 
+}
 
-// Async thunks for API calls
 export const addExperience = createAsyncThunk(
   'profile/addExperience',
   async (experience: Experience, { rejectWithValue }) => {
@@ -78,6 +79,9 @@ const profileSlice = createSlice({
       state.error = action.payload;
       state.loading = false;
     },
+      setUrl(state, action: PayloadAction<string>) {
+      state.url = action.payload;
+    },
     updateBasicInfo(state, action: PayloadAction<BasicInfo>) {
       if (state.profileData) {
         state.profileData.basicInfo = action.payload;
@@ -124,6 +128,6 @@ const profileSlice = createSlice({
   },
 });
 
-export const { setProfileData, setLoading, setError, updateBasicInfo, updateMyDetails } = profileSlice.actions;
+export const { setProfileData, setLoading, setError,  setUrl, updateBasicInfo, updateMyDetails } = profileSlice.actions;
 
 export default profileSlice.reducer; 

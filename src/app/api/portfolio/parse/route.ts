@@ -1,8 +1,6 @@
 import { NextResponse } from 'next/server';
 import type {  PortfolioParseResponse } from '@/types';
 
-
-
 import { mockData } from "../../../../data/mockPortfolio"; 
 
 
@@ -23,12 +21,12 @@ export async function GET(request: Request): Promise<NextResponse<PortfolioParse
 export async function POST(request: Request): Promise<NextResponse<PortfolioParseResponse>> {
   try {
     
-    await request.json(); // Consume the body if needed
+    await request.json(); 
 
 
     const response: PortfolioParseResponse = {
       success: true,
-      data: mockData // Or data processed from the POST request
+      data: mockData 
     };
 
     return NextResponse.json(response);

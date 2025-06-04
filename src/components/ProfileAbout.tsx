@@ -1,15 +1,15 @@
 "use client";
 
-import type { BasicInfo } from '@/types';
+import { useSelector } from "react-redux";
+import type { RootState } from "../lib/store";
 
-interface ProfileAboutProps {
-  basicInfo: {
-    intro: string;
-    aboutMe?: string;
-  };
-}
+export default function ProfileAbout() {
+  const basicInfo = useSelector(
+    (state: RootState) => state.profile.profileData?.basicInfo
+  );
 
-export default function ProfileAbout({ basicInfo }: ProfileAboutProps) {
+  if (!basicInfo) return null;
+
   const { intro, aboutMe } = basicInfo;
 
   return (
