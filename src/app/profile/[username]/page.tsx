@@ -81,6 +81,7 @@ export default function ProfilePage() {
     <div className="container mx-auto px-4 py-8">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         <div className="md:col-span-1">
+           <div className="sticky top-8">
           <ProfileSidebar
             username={username as string}
             onMenuItemClick={handleMenuItemClick}
@@ -89,9 +90,12 @@ export default function ProfilePage() {
             verifiedDate={verifiedDate}
             onUpdateBasicInfo={handleUpdateBasicInfo}
           />
+           </div>
         </div>
         <div className="md:col-span-2">
-          <ProfileAbout  />
+          <div className="mb-6">
+  <ProfileAbout />
+</div>
 
           <ProfileExperience
             employers={experience}

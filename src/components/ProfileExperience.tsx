@@ -34,6 +34,7 @@ export default function ProfileExperience({
 
   return (
     <section id="experience" className="mb-8">
+      <div className="border border-gray-300 rounded-xl p-6 bg-white shadow-sm w-full">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold text-gray-900 ">Experience</h2>
         <div className="flex items-center space-x-4">
@@ -94,6 +95,7 @@ export default function ProfileExperience({
           </button>
         </div>
       )}
+      </div>
     </section>
   );
 } 
