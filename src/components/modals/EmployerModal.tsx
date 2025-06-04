@@ -2,49 +2,37 @@
 
 import { Fragment, useState, useEffect } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import type { Experience } from '@/types';
-import { useAppSelector, useAppDispatch } from '@/lib/hooks'; // Import typed hooks
-import { closeEmployerModal } from '@/lib/modalSlice'; // Import modal action
-import { addEmployer, updateEmployer } from '@/lib/profileSlice'; // Import profile actions
+import type { Experience, Project } from '@/types';
+import { useAppSelector, useAppDispatch } from '@/lib/hooks';
+import { closeEmployerModal, ModalState } from '@/lib/modalSlice';
+import { addExperience, updateExperience } from '@/lib/profileSlice';
 
-// Remove props as state will be from Redux
-// interface EmployerModalProps {
-//   isOpen: boolean;
-//   onClose: () => void;
-//   onSubmit: (data: Partial<Experience>) => void;
-//   initialData?: Experience;
-// }
-
-export default function EmployerModal(/* Remove props */) {
-  // Get state and dispatch from Redux
-  const { isEmployerModalOpen, selectedEmployer } = useAppSelector(state => state.modal);
+export default function EmployerModal() {
+  const { isEmployerModalOpen, selectedEmployer } = useAppSelector(state => state.modal as ModalState);
   const dispatch = useAppDispatch();
 
-  // Local state for form data, initialized from selectedEmployer or default
   const [formData, setFormData] = useState<Partial<Experience>>({
     company: '',
     position: '',
     duration: '',
-    type: undefined, // Assuming type is optional or handled differently
+    type: undefined,
     description: '',
     startDate: '',
     endDate: '',
   });
 
-  // Effect to update form data when selectedEmployer changes (for editing)
   useEffect(() => {
     if (selectedEmployer) {
       setFormData({
         company: selectedEmployer.company || '',
         position: selectedEmployer.position || '',
         duration: selectedEmployer.duration || '',
-        type: selectedEmployer.type, // Assuming type is optional or handled differently
+        type: selectedEmployer.type,
         description: selectedEmployer.description || '',
         startDate: selectedEmployer.startDate || '',
         endDate: selectedEmployer.endDate || '',
       });
     } else {
-      // Reset form data when adding a new employer
       setFormData({
         company: '',
         position: '',
@@ -58,40 +46,48 @@ export default function EmployerModal(/* Remove props */) {
   }, [selectedEmployer]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    setFormData({ ...formData, [e.target.id]: e.target.value });
+    const { id, value } = e.target;
+    setFormData({ ...formData, [id]: value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Dispatch add or update action based on selectedEmployer
-    if (selectedEmployer) {
-        // Update existing employer
-        const updatedEmployer: Experience = { // Ensure all required fields are present
+    
+    if (formData.company && formData.position && formData.startDate && formData.type) {
+      try {
+        if (selectedEmployer) {
+          const updatedEmployer: Experience = {
             ...selectedEmployer,
             ...formData,
-            // Add logic to combine startDate and endDate into duration if needed
-            duration: formData.startDate && formData.endDate ? `${formData.startDate} - ${formData.endDate}` : formData.duration || '',
-            type: formData.type || 'Full-time', // Provide a default if type is required
-        };
-        dispatch(updateEmployer(updatedEmployer));
-    } else {
-        // Add new employer
-        const newEmployer: Experience = { // Ensure all required fields are present
+            id: selectedEmployer.id,
+            duration: formData.startDate && formData.endDate ? `${formData.startDate} - ${formData.endDate}` : selectedEmployer.duration || '',
+            type: formData.type || selectedEmployer.type || 'Full-time',
+            projects: selectedEmployer.projects || [],
+            subscribers: selectedEmployer.subscribers || 0,
+          };
+          await dispatch(updateExperience(updatedEmployer as Experience));
+        } else {
+          const newEmployer: Experience = {
             id: `exp-${Date.now()}`,
             ...formData,
-            // Add logic to combine startDate and endDate into duration if needed
-             duration: formData.startDate && formData.endDate ? `${formData.startDate} - ${formData.endDate}` : formData.duration || '',
-            type: formData.type || 'Full-time', // Provide a default if type is required
-             projects: [], // Initialize with empty projects array
-             subscribers: 0, // Initialize with 0 subscribers
-        } as Experience; // Cast to Experience to satisfy type
-        dispatch(addEmployer(newEmployer));
+            duration: formData.startDate && formData.endDate ? `${formData.startDate} - ${formData.endDate}` : formData.duration || '',
+            type: formData.type || 'Full-time',
+            projects: [],
+            subscribers: 0,
+          } as Experience;
+          await dispatch(addExperience(newEmployer as Experience));
+        }
+        dispatch(closeEmployerModal());
+      } catch (err) {
+        console.error('Failed to save experience:', err);
+      }
+    } else {
+      console.error('Required fields are missing');
     }
-    dispatch(closeEmployerModal()); // Close modal after submit
   };
 
   const handleClose = () => {
-    dispatch(closeEmployerModal()); // Dispatch close action
+    dispatch(closeEmployerModal());
   };
 
   return (
@@ -129,7 +125,6 @@ export default function EmployerModal(/* Remove props */) {
                 </Dialog.Title>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
-                  {/* Company Name */}
                   <div>
                     <label htmlFor="company" className="block text-sm font-medium text-gray-700">
                       Company/Client Name
@@ -137,14 +132,13 @@ export default function EmployerModal(/* Remove props */) {
                     <input
                       type="text"
                       id="company"
-                      value={formData.company}
+                      value={formData.company || ''}
                       onChange={handleChange}
                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                       required
                     />
                   </div>
 
-                  {/* Job Title */}
                   <div>
                     <label htmlFor="position" className="block text-sm font-medium text-gray-700">
                       Job Title
@@ -152,15 +146,14 @@ export default function EmployerModal(/* Remove props */) {
                     <input
                       type="text"
                       id="position"
-                      value={formData.position}
+                      value={formData.position || ''}
                       onChange={handleChange}
                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                       required
                     />
                   </div>
 
-                  {/* Duration (Split into Start and End Dates) */}
-                   <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-2 gap-4">
                     <div>
                       <label htmlFor="startDate" className="block text-sm font-medium text-gray-700">
                         Start Date
@@ -168,39 +161,38 @@ export default function EmployerModal(/* Remove props */) {
                       <input
                         type="date"
                         id="startDate"
-                        value={formData.startDate}
+                        value={formData.startDate || ''}
                         onChange={handleChange}
                         className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                         required
                       />
                     </div>
                     <div>
-                       <label htmlFor="endDate" className="block text-sm font-medium text-gray-700">
+                      <label htmlFor="endDate" className="block text-sm font-medium text-gray-700">
                         End Date (or Present)
                       </label>
                       <input
                         type="date"
                         id="endDate"
-                        value={formData.endDate}
+                        value={formData.endDate || ''}
                         onChange={handleChange}
                         className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                       />
                     </div>
                   </div>
 
-                  {/* Employment Type */}
                   <div>
                     <label htmlFor="type" className="block text-sm font-medium text-gray-700">
                       Employment Type
                     </label>
                     <select
                       id="type"
-                      value={formData.type}
+                      value={formData.type || ''}
                       onChange={handleChange}
                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                       required
                     >
-                       <option value="">Select Type</option>
+                      <option value="">Select Type</option>
                       <option value="Full-time">Full-time</option>
                       <option value="Part-time">Part-time</option>
                       <option value="Contract">Contract</option>
@@ -208,7 +200,6 @@ export default function EmployerModal(/* Remove props */) {
                     </select>
                   </div>
 
-                  {/* Summary of Contributions */}
                   <div>
                     <label htmlFor="description" className="block text-sm font-medium text-gray-700">
                       Summary of Contributions
@@ -216,14 +207,13 @@ export default function EmployerModal(/* Remove props */) {
                     <textarea
                       id="description"
                       rows={3}
-                      value={formData.description}
+                      value={formData.description || ''}
                       onChange={handleChange}
                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                       required
                     ></textarea>
                   </div>
 
-                  {/* Submit Button */}
                   <div className="mt-4">
                     <button
                       type="submit"

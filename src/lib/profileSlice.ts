@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { PortfolioData, Experience, BasicInfo } from '@/types';
 
 interface ProfileState {
@@ -12,6 +12,55 @@ const initialState: ProfileState = {
   loading: false,
   error: null,
 };
+
+// Async thunks for API calls
+export const addExperience = createAsyncThunk(
+  'profile/addExperience',
+  async (experience: Experience, { rejectWithValue }) => {
+    try {
+      const response = await fetch('/api/portfolio/experience/add', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(experience),
+      });
+
+      const data = await response.json();
+      if (!data.success) {
+        return rejectWithValue(data.message);
+      }
+
+      return data.data.experience;
+    } catch (error) {
+      return rejectWithValue('Failed to add experience');
+    }
+  }
+);
+
+export const updateExperience = createAsyncThunk(
+  'profile/updateExperience',
+  async (experience: Experience, { rejectWithValue }) => {
+    try {
+      const response = await fetch('/api/portfolio/experience/update', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(experience),
+      });
+
+      const data = await response.json();
+      if (!data.success) {
+        return rejectWithValue(data.message);
+      }
+
+      return data.data.experience;
+    } catch (error) {
+      return rejectWithValue('Failed to update experience');
+    }
+  }
+);
 
 const profileSlice = createSlice({
   name: 'profile',
@@ -29,11 +78,6 @@ const profileSlice = createSlice({
       state.error = action.payload;
       state.loading = false;
     },
-    updateExperience(state, action: PayloadAction<Experience[]>) {
-      if (state.profileData) {
-        state.profileData.experience = action.payload;
-      }
-    },
     updateBasicInfo(state, action: PayloadAction<BasicInfo>) {
       if (state.profileData) {
         state.profileData.basicInfo = action.payload;
@@ -43,23 +87,43 @@ const profileSlice = createSlice({
       if (state.profileData) {
         state.profileData.basicInfo.myDetails = action.payload;
       }
-    },
-    addEmployer(state, action: PayloadAction<Experience>) {
-      if (state.profileData) {
-        state.profileData.experience.push(action.payload);
-      }
-    },
-    updateEmployer(state, action: PayloadAction<Experience>) {
-      if (state.profileData) {
-        const index = state.profileData.experience.findIndex(emp => emp.id === action.payload.id);
-        if (index !== -1) {
-          state.profileData.experience[index] = action.payload;
-        }
-      }
     }
+  },
+  extraReducers: (builder) => {
+    builder
+      // Handle addExperience
+      .addCase(addExperience.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(addExperience.fulfilled, (state, action) => {
+        if (state.profileData) {
+          state.profileData.experience = action.payload;
+        }
+        state.loading = false;
+      })
+      .addCase(addExperience.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      // Handle updateExperience
+      .addCase(updateExperience.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateExperience.fulfilled, (state, action) => {
+        if (state.profileData) {
+          state.profileData.experience = action.payload;
+        }
+        state.loading = false;
+      })
+      .addCase(updateExperience.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      });
   },
 });
 
-export const { setProfileData, setLoading, setError, updateExperience, updateBasicInfo, updateMyDetails, addEmployer, updateEmployer } = profileSlice.actions;
+export const { setProfileData, setLoading, setError, updateBasicInfo, updateMyDetails } = profileSlice.actions;
 
 export default profileSlice.reducer; 

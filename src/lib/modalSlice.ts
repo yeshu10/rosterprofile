@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Project, Experience } from '@/types';
 
-interface ModalState {
+export interface ModalState {
   isProjectsModalOpen: boolean;
   isEmployerModalOpen: boolean;
   selectedProject: Project | null;

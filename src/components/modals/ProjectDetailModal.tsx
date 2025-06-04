@@ -3,18 +3,18 @@
 import { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import Image from 'next/image';
-import { useAppSelector, useAppDispatch } from '@/lib/hooks'; // Import typed hooks
-import { setSelectedProject } from '@/lib/modalSlice'; // Import action
+import { useAppSelector, useAppDispatch } from '@/lib/hooks'; 
+import { setSelectedProject } from '@/lib/modalSlice'; 
 
 import type { Project } from '@/types';
 
 
-export default function ProjectDetailModal(/* Remove props */) {
+export default function ProjectDetailModal() {
 
   const { selectedProject: project } = useAppSelector(state => state.modal);
   const dispatch = useAppDispatch();
 
-  // Only show the modal if a project is provided (logic remains)
+  
   const isOpen = !!project;
 
   const handleClose = () => {
@@ -77,15 +77,15 @@ export default function ProjectDetailModal(/* Remove props */) {
                 </div>
 
                 {/* Project Content */}
-                {project && ( // Ensure project exists before rendering content
+                {project && ( 
                   <div className="mt-2 space-y-4">
-                    {/* Project Thumbnail */}
+                    
                     {project.imageUrl && (
                       <div className="w-full h-64 relative rounded-lg overflow-hidden">
                          <Image
                           src={project.imageUrl}
                           alt={project.title}
-                          fill={true} // Use fill for responsive image
+                          fill={true} 
                           className="object-cover"
                         />
                       </div>
@@ -94,8 +94,7 @@ export default function ProjectDetailModal(/* Remove props */) {
                     {/* Project Title */}
                     <h4 className="text-xl font-bold text-gray-900">{project.title}</h4>
 
-                     {/* Project Role (Assuming it can be added to Project type or passed) */}
-                     {/* <p className="text-sm text-gray-600">Role: {project.role}</p> */}
+                
 
                     {/* Project Stats */}
                     <div className="flex items-center text-gray-500 text-sm">
@@ -132,7 +131,7 @@ export default function ProjectDetailModal(/* Remove props */) {
                       </div>
                     )}
 
-                     {/* View on GitHub Button */}
+                    
                     {project.githubUrl && ( // Assuming a githubUrl field exists
                       <div className="mt-4">
                         <a
