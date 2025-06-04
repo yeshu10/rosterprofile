@@ -3,16 +3,22 @@
 import { useState, useMemo } from 'react';
 import type { Experience, Project } from '@/types';
 import Image from 'next/image';
-import ProjectDetailModal from '@/components/modals/ProjectDetailModal';
-import EmployerModal from '@/components/modals/EmployerModal';
+// Remove modal component imports from here
+// import ProjectDetailModal from '@/components/modals/ProjectDetailModal';
+// import EmployerModal from '@/components/modals/EmployerModal';
+import { useAppSelector, useAppDispatch } from '@/lib/hooks';
+import { setVisibleExperiencesCount } from '@/lib/uiSlice';
+import { openProjectsModal, openEmployerModal, setSelectedProject } from '@/lib/modalSlice'; // Import necessary modal actions
 
 interface ProfileExperienceProps {
   employers: Experience[];
-  onViewProjects: () => void;
   onUpdateExperience?: (updatedExperience: Experience[]) => void;
 }
 
-export default function ProfileExperience({ employers, onViewProjects, onUpdateExperience }: ProfileExperienceProps) {
+export default function ProfileExperience({
+  employers,
+  onUpdateExperience
+}: ProfileExperienceProps) {
   // State to manage toggle for each experience item
   const [openExperienceId, setOpenExperienceId] = useState<string | null>(null);
   // State to manage search term for each experience's projects
@@ -26,12 +32,14 @@ export default function ProfileExperience({ employers, onViewProjects, onUpdateE
   // State to manage the employer modal
   const [isEmployerModalOpen, setIsEmployerModalOpen] = useState(false);
   const [selectedEmployer, setSelectedEmployer] = useState<Experience | undefined>();
-  const [visibleExperiencesCount, setVisibleExperiencesCount] = useState(2);
 
   const projectsPerRow = 3;
 
-  // State to manage the currently selected project for the detail modal
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  // Use typed selector to access visibleExperiencesCount from Redux
+  const visibleExperiencesCount = useAppSelector(state => state.ui.visibleExperiencesCount);
+  // Get modal states from Redux (if needed in this component, though likely not for rendering)
+  // const { isEmployerModalOpen, selectedEmployer, isProjectsModalOpen, selectedProject: reduxSelectedProject } = useAppSelector(state => state.modal);
+  const dispatch = useAppDispatch(); // Use typed dispatch
 
   // Initialize visible projects count for each experience on mount or when employers change
   useMemo(() => {
@@ -65,47 +73,36 @@ export default function ProfileExperience({ employers, onViewProjects, onUpdateE
     }));
   };
 
+  // Dispatch action to set selected project and open detail modal
   const handleOpenProjectDetailModal = (project: Project) => {
-    setSelectedProject(project);
+      dispatch(setSelectedProject(project)); // Dispatch action to set selected project in Redux
+      // The ProjectDetailModal component watches the selectedProject state to open itself
   };
 
-  const handleCloseProjectDetailModal = () => {
-    setSelectedProject(null);
+  // Dispatch action to clear selected project and close detail modal (if needed, modal handles close based on state)
+   // const handleCloseProjectDetailModal = () => {
+   //    dispatch(setSelectedProject(null));
+   // };
+
+
+  // Dispatch open projects modal action
+  const handleViewProjectsClick = () => {
+    dispatch(openProjectsModal());
   };
 
-  const handleOpenEmployerModal = (employer?: Experience) => {
-    setSelectedEmployer(employer);
-    setIsEmployerModalOpen(true);
+  // Dispatch open employer modal action for adding
+  const handleAddExperienceClick = () => {
+    dispatch(openEmployerModal(undefined)); // Pass undefined for adding new experience
   };
 
-  const handleCloseEmployerModal = () => {
-    setIsEmployerModalOpen(false);
-    setSelectedEmployer(undefined);
+  // Dispatch open employer modal action for editing
+  const handleEditExperienceClick = (employer: Experience) => {
+    dispatch(openEmployerModal(employer)); // Pass the employer data for editing
   };
 
-  const handleEmployerSubmit = (employerData: Partial<Experience>) => {
-    if (onUpdateExperience) {
-      if (selectedEmployer) {
-        // Update existing employer
-        const updatedEmployers = employers.map(emp => 
-          emp.id === selectedEmployer.id ? { ...emp, ...employerData } : emp
-        );
-        onUpdateExperience(updatedEmployers);
-      } else {
-        // Add new employer
-        const newEmployer: Experience = {
-          id: `exp-${Date.now()}`,
-          ...employerData,
-          projects: [],
-          subscribers: 0
-        } as Experience;
-        onUpdateExperience([...employers, newEmployer]);
-      }
-    }
-  };
 
   const handleShowMoreExperiences = () => {
-    setVisibleExperiencesCount(employers.length);
+    dispatch(setVisibleExperiencesCount(employers.length));
   };
 
   const formatCount = (count?: number) => {
@@ -125,13 +122,13 @@ export default function ProfileExperience({ employers, onViewProjects, onUpdateE
         <h2 className="text-2xl font-bold text-gray-900 ">Experience</h2>
         <div className="flex items-center space-x-4">
           <button
-            onClick={onViewProjects}
+            onClick={handleViewProjectsClick} // Use handler that dispatches action
             className="text-blue-600  hover:underline text-sm font-semibold"
           >
             View Projects
           </button>
           <button
-            onClick={() => handleOpenEmployerModal()}
+            onClick={handleAddExperienceClick} // Use handler that dispatches action
             className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -182,7 +179,7 @@ export default function ProfileExperience({ employers, onViewProjects, onUpdateE
                   </div>
                   <div className="flex items-center space-x-2">
                     <button
-                      onClick={() => handleOpenEmployerModal(employer)}
+                      onClick={() => handleEditExperienceClick(employer)} // Use handler that dispatches action for editing
                       className="text-gray-400 hover:text-gray-600 "
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -211,7 +208,7 @@ export default function ProfileExperience({ employers, onViewProjects, onUpdateE
                     <p className="text-sm text-gray-600 ">{employer.description}</p>
 
                     {/* Projects Section */}
-                    {visibleProjects.length > 0 && (
+                    {(employer.projects || []).length > 0 && (
                       <div className="mt-4">
                         <h4 className="text-sm font-semibold text-gray-900 mb-4">Projects:</h4>
                         
@@ -266,51 +263,56 @@ export default function ProfileExperience({ employers, onViewProjects, onUpdateE
                           </div>
                         </div>
 
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                          {visibleProjects.map((project) => (
-                            <div
-                              key={project.id}
-                              className="border border-gray-200  rounded-lg overflow-hidden shadow-sm bg-white  transition-colors duration-300 cursor-pointer"
-                              onClick={() => handleOpenProjectDetailModal(project)}
-                            >
-                              <Image
-                                src={project.imageUrl || '/images/placeholder-project.jpg'}
-                                alt={project.title}
-                                width={400}
-                                height={200}
-                                className="w-full h-32 object-cover"
-                              />
-                              <div className="p-4">
-                                <h5 className="text-sm font-medium text-gray-900  mb-1">
-                                  {project.title}
-                                </h5>
-                                <p className="text-xs text-gray-500  mb-2">
-                                  {project.description}
-                                </p>
-                                <div className="flex items-center text-xs text-gray-500 ">
-                                  <span className="flex items-center mr-3">
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                    </svg>
-                                    {formatCount(project.views)}
-                                  </span>
-                                  <span className="flex items-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                                    </svg>
-                                    {formatCount(project.likes)}
-                                  </span>
-                                </div>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
+                        {/* Projects Grid */}
+                         {visibleProjects.length > 0 ? (
+                           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                             {visibleProjects.map((project) => (
+                               <div
+                                 key={project.id}
+                                 className="border border-gray-200  rounded-lg overflow-hidden shadow-sm bg-white  transition-colors duration-300 cursor-pointer"
+                                 onClick={() => handleOpenProjectDetailModal(project)} // Use handler that dispatches action
+                               >
+                                 <Image
+                                   src={project.imageUrl || '/images/placeholder-project.jpg'}
+                                   alt={project.title}
+                                   width={400}
+                                   height={200}
+                                   className="w-full h-32 object-cover"
+                                 />
+                                 <div className="p-4">
+                                   <h5 className="text-sm font-medium text-gray-900  mb-1">
+                                     {project.title}
+                                   </h5>
+                                   <p className="text-xs text-gray-500  mb-2">
+                                     {project.description}
+                                   </p>
+                                   <div className="flex items-center text-xs text-gray-500 ">
+                                     <span className="flex items-center mr-3">
+                                       <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                       </svg>
+                                       {formatCount(project.views)}
+                                     </span>
+                                     <span className="flex items-center">
+                                       <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                       </svg>
+                                       {formatCount(project.likes)}
+                                     </span>
+                                   </div>
+                                 </div>
+                               </div>
+                             ))}
+                           </div>
+                         ) : (
+                           <p className="text-sm text-gray-500 ">No projects found.</p>
+                         )}
 
                         {hasMoreProjects && (
                           <div className="mt-4 text-center">
                             <button
-                              onClick={() => handleLoadMoreProjects(employer.id)}
+                              onClick={() => handleLoadMoreProjects(employer.id)} // Use local handler
                               className="text-blue-600  hover:underline text-sm font-semibold"
                             >
                               Load more projects
@@ -327,25 +329,18 @@ export default function ProfileExperience({ employers, onViewProjects, onUpdateE
         })}
       </div>
 
+      {/* Show more work experience button */}
       <div className="text-center mt-4">
         <button
-          onClick={handleShowMoreExperiences}
+          onClick={handleShowMoreExperiences} // Use local handler that dispatches action
           className="text-blue-600 hover:underline text-sm font-semibold"
         >
           Show more work experience
         </button>
       </div>
 
-      {/* Project Detail Modal */}
-      <ProjectDetailModal project={selectedProject} onClose={handleCloseProjectDetailModal} />
+      {/* Modals are rendered in page.tsx and controlled by Redux state */}
 
-      {/* Employer Modal */}
-      <EmployerModal
-        isOpen={isEmployerModalOpen}
-        onClose={handleCloseEmployerModal}
-        onSubmit={handleEmployerSubmit}
-        initialData={selectedEmployer}
-      />
     </div>
   );
 } 

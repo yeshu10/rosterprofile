@@ -1,55 +1,50 @@
 "use client";
 
-import { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
-import ProfileSidebar from '@/components/ProfileSidebar';
-import ProfileAbout from '@/components/ProfileAbout';
-import ProfileExperience from '@/components/ProfileExperience';
-import ProfileDetails from '@/components/ProfileDetails';
-import type { PortfolioData, PortfolioParseResponse, Experience } from '@/types';
-import { mockProjects } from '@/data/mockProjects';
-import ProjectsModal from '@/components/modals/ProjectsModal';
+import { useEffect } from "react";
+import { useParams } from "next/navigation";
+import { useAppSelector, useAppDispatch } from '@/lib/hooks';
+import { setProfileData, setLoading, setError, updateExperience, updateBasicInfo, updateMyDetails } from '@/lib/profileSlice';
+import { openProjectsModal, closeProjectsModal, setSelectedProject, openEmployerModal, closeEmployerModal } from '@/lib/modalSlice';
+import { RootState } from '@/lib/store';
+
+import ProfileSidebar from "@/components/ProfileSidebar";
+import ProfileAbout from "@/components/ProfileAbout";
+import ProfileExperience from "@/components/ProfileExperience";
+import ProfileDetails from "@/components/ProfileDetails";
+import ProjectsModal from "@/components/modals/ProjectsModal";
+import ProjectDetailModal from "@/components/modals/ProjectDetailModal";
+import EmployerModal from "@/components/modals/EmployerModal";
+import type { Experience, BasicInfo, Project } from '@/types';
 
 export default function ProfilePage() {
   const { username } = useParams();
-  const [profileData, setProfileData] = useState<PortfolioData | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [isProjectsModalOpen, setIsProjectsModalOpen] = useState(false);
+  const dispatch = useAppDispatch();
+
+  // Access state directly from useAppSelector and destructure
+  const { profileData, loading, error } = useAppSelector((state: RootState) => state.profile);
+  const { isProjectsModalOpen, selectedProject, isEmployerModalOpen, selectedEmployer } = useAppSelector((state: RootState) => state.modal);
 
   useEffect(() => {
     const fetchProfileData = async () => {
+      dispatch(setLoading(true));
       try {
-        // Call the local mock API endpoint
-        const response = await fetch('/api/portfolio/parse', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ url: `mockdata/${username}` }), // Use a mock URL format
-        });
-
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.message || 'Failed to fetch profile data');
+        // Replace with your actual API call
+        const res = await fetch(`/api/portfolio/parse?username=${username}`);
+        const data = await res.json();
+        if (data.success) {
+          dispatch(setProfileData(data.data));
+        } else {
+          dispatch(setError(data.message || 'Failed to fetch profile data'));
         }
-
-        const result: PortfolioParseResponse = await response.json();
-        
-        if (!result.success || !result.data) {
-          throw new Error(result.message || 'Failed to load profile data');
-        }
-
-        setProfileData(result.data);
-      } catch (err) {
-        setError((err as Error).message);
-      } finally {
-        setLoading(false);
+      } catch (err: any) {
+        dispatch(setError(err.message || 'An error occurred'));
       }
     };
 
-    fetchProfileData();
-  }, [username]);
+    if (username) {
+      fetchProfileData();
+    }
+  }, [username, dispatch]);
 
   // Function to handle menu item click and scroll
   const handleMenuItemClick = (sectionId: string) => {
@@ -59,57 +54,47 @@ export default function ProfilePage() {
     }
   };
 
-  // Function to handle projects modal
+  // Function to handle projects modal - simply dispatches open action
   const handleViewProjects = () => {
-    setIsProjectsModalOpen(true);
+    dispatch(openProjectsModal());
   };
 
   const handleCloseProjectsModal = () => {
-    setIsProjectsModalOpen(false);
+    dispatch(closeProjectsModal());
   };
 
   // Function to handle experience updates
   const handleUpdateExperience = (updatedExperience: Experience[]) => {
-    if (profileData) {
-      setProfileData({
-        ...profileData,
-        experience: updatedExperience
-      });
-    }
+    dispatch(updateExperience(updatedExperience));
+  };
+
+  const handleUpdateBasicInfo = (updatedInfo: BasicInfo) => {
+      dispatch(updateBasicInfo(updatedInfo));
   };
 
   const handleUpdateDetails = (updatedDetails: BasicInfo['myDetails']) => {
-    if (profileData) {
-      setProfileData(prev => ({
-        ...prev,
-        basicInfo: {
-          ...prev.basicInfo,
-          myDetails: updatedDetails
-        }
-      }));
-    }
+      dispatch(updateMyDetails(updatedDetails));
   };
 
   if (loading) {
-    return <div className="text-center mt-8 text-gray-900 dark:text-gray-100">Loading...</div>;
+    return <div className="text-center mt-8 text-gray-900">Loading...</div>;
   }
 
   if (error) {
-    return <div className="text-center mt-8 text-red-600 dark:text-red-400">Error: {error}</div>;
+    return <div className="text-center mt-8 text-red-600">Error: {error}</div>;
   }
 
   if (!profileData) {
-    return <div className="text-center mt-8 text-gray-900 dark:text-gray-100">Profile not found.</div>;
+    return <div className="text-center mt-8 text-gray-900">Profile not found.</div>;
   }
 
-  // Destructure for easier access
+  // Destructure from profileData after null check
   const { basicInfo, experience, isAvailable, followerCount, verifiedDate } = profileData;
 
   return (
-    <div className="container mx-auto p-6">
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        {/* Sidebar */}
-        <div className="md:col-span-1 md:sticky md:top-6 h-fit">
+    <div className="container mx-auto px-4 py-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="md:col-span-1">
           <ProfileSidebar
             basicInfo={basicInfo}
             username={username as string}
@@ -117,39 +102,34 @@ export default function ProfilePage() {
             isOpenToWork={isAvailable}
             subscribers={followerCount}
             verifiedDate={verifiedDate}
+            onUpdateBasicInfo={handleUpdateBasicInfo}
           />
         </div>
-
-        {/* Main Content */}
-        <div className="md:col-span-3 space-y-8">
-          {/* About Section */}
+        <div className="md:col-span-2">
           <ProfileAbout basicInfo={basicInfo} />
 
-          {/* Experience Section */}
           <ProfileExperience
             employers={experience}
-            onViewProjects={handleViewProjects}
             onUpdateExperience={handleUpdateExperience}
           />
 
-          {/* My Details Section */}
           {basicInfo.myDetails && (
-            <ProfileDetails 
-              myDetails={basicInfo.myDetails} 
+            <ProfileDetails
+              myDetails={basicInfo.myDetails}
               onUpdateDetails={handleUpdateDetails}
             />
           )}
-         
         </div>
       </div>
 
-      {/* Projects Modal */}
-      {isProjectsModalOpen && (
-        <ProjectsModal
-          projects={mockProjects}
-          onClose={handleCloseProjectsModal}
-        />
-      )}
+      {/* Projects Modal - Controlled by Redux state, render unconditionally */}
+      <ProjectsModal />
+
+      {/* Project Detail Modal - Controlled by Redux state, render unconditionally */}
+      <ProjectDetailModal />
+
+      {/* Employer Modal - Controlled by Redux state, render unconditionally */}
+      <EmployerModal />
     </div>
   );
 }

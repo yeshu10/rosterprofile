@@ -2,10 +2,14 @@
 
 import type { BasicInfo } from '@/types';
 import { useState, useRef, useEffect } from 'react';
+import { useAppSelector, useAppDispatch } from '@/lib/hooks';
+import { updateMyDetails } from '@/lib/profileSlice';
 
 interface ProfileDetailsProps {
-  myDetails: BasicInfo['myDetails'];
-  onUpdateDetails?: (updatedDetails: BasicInfo['myDetails']) => void;
+  // Remove myDetails prop as it will be read from Redux
+  // myDetails: BasicInfo['myDetails'];
+  // Remove onUpdateDetails prop as logic will dispatch action
+  // onUpdateDetails?: (updatedDetails: BasicInfo['myDetails']) => void;
 }
 
 const AVAILABILITY_OPTIONS = [
@@ -41,7 +45,7 @@ const AVAILABILITY_OPTIONS = [
   'Available for non-profit projects'
 ];
 
-export default function ProfileDetails({ myDetails, onUpdateDetails }: ProfileDetailsProps) {
+export default function ProfileDetails(/* Remove props */) {
   const [showAllDetails, setShowAllDetails] = useState(false);
   const [isEditingJobTypes, setIsEditingJobTypes] = useState(false);
   const [isEditingContent, setIsEditingContent] = useState(false);
@@ -66,6 +70,10 @@ export default function ProfileDetails({ myDetails, onUpdateDetails }: ProfileDe
   const softwareRef = useRef<HTMLDivElement>(null);
   const languagesRef = useRef<HTMLDivElement>(null);
   const availabilityRef = useRef<HTMLDivElement>(null);
+
+  // Use typed selector to access myDetails from Redux state
+  const myDetails = useAppSelector(state => state.profile.profileData?.basicInfo?.myDetails);
+  const dispatch = useAppDispatch(); // Use typed dispatch
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -102,122 +110,123 @@ export default function ProfileDetails({ myDetails, onUpdateDetails }: ProfileDe
     setShowAllDetails(prev => !prev);
   };
 
+  // Update handler functions to dispatch actions
   const handleAddJobType = (item: string) => {
-    if (!onUpdateDetails) return;
+    if (!myDetails) return;
     const updatedDetails = {
       ...myDetails,
       jobTypes: [...myDetails.jobTypes, item]
     };
-    onUpdateDetails(updatedDetails);
+    dispatch(updateMyDetails(updatedDetails));
   };
 
   const handleRemoveJobType = (index: number) => {
-    if (!onUpdateDetails) return;
+    if (!myDetails) return;
     const updatedDetails = {
       ...myDetails,
       jobTypes: myDetails.jobTypes.filter((_, i) => i !== index)
     };
-    onUpdateDetails(updatedDetails);
+    dispatch(updateMyDetails(updatedDetails));
   };
 
   const handleAddContent = (item: string) => {
-    if (!onUpdateDetails) return;
+    if (!myDetails) return;
     const updatedDetails = {
       ...myDetails,
       contentVerticals: [...myDetails.contentVerticals, item]
     };
-    onUpdateDetails(updatedDetails);
+    dispatch(updateMyDetails(updatedDetails));
   };
 
   const handleRemoveContent = (index: number) => {
-    if (!onUpdateDetails) return;
+    if (!myDetails) return;
     const updatedDetails = {
       ...myDetails,
       contentVerticals: myDetails.contentVerticals.filter((_, i) => i !== index)
     };
-    onUpdateDetails(updatedDetails);
+    dispatch(updateMyDetails(updatedDetails));
   };
 
   const handleAddPlatform = (item: string) => {
-    if (!onUpdateDetails) return;
+    if (!myDetails) return;
     const updatedDetails = {
       ...myDetails,
       platformSpecialty: [...myDetails.platformSpecialty, item]
     };
-    onUpdateDetails(updatedDetails);
+    dispatch(updateMyDetails(updatedDetails));
   };
 
   const handleRemovePlatform = (index: number) => {
-    if (!onUpdateDetails) return;
+    if (!myDetails) return;
     const updatedDetails = {
       ...myDetails,
       platformSpecialty: myDetails.platformSpecialty.filter((_, i) => i !== index)
     };
-    onUpdateDetails(updatedDetails);
+    dispatch(updateMyDetails(updatedDetails));
   };
 
   const handleAddSkill = (item: string) => {
-    if (!onUpdateDetails) return;
+    if (!myDetails) return;
     const updatedDetails = {
       ...myDetails,
       skills: [...myDetails.skills, item]
     };
-    onUpdateDetails(updatedDetails);
+    dispatch(updateMyDetails(updatedDetails));
   };
 
   const handleRemoveSkill = (index: number) => {
-    if (!onUpdateDetails) return;
+    if (!myDetails) return;
     const updatedDetails = {
       ...myDetails,
       skills: myDetails.skills.filter((_, i) => i !== index)
     };
-    onUpdateDetails(updatedDetails);
+    dispatch(updateMyDetails(updatedDetails));
   };
 
   const handleAddSoftware = (item: string) => {
-    if (!onUpdateDetails) return;
+    if (!myDetails) return;
     const updatedDetails = {
       ...myDetails,
       software: [...myDetails.software, item]
     };
-    onUpdateDetails(updatedDetails);
+    dispatch(updateMyDetails(updatedDetails));
   };
 
   const handleRemoveSoftware = (index: number) => {
-    if (!onUpdateDetails) return;
+    if (!myDetails) return;
     const updatedDetails = {
       ...myDetails,
       software: myDetails.software.filter((_, i) => i !== index)
     };
-    onUpdateDetails(updatedDetails);
+    dispatch(updateMyDetails(updatedDetails));
   };
 
   const handleAddLanguage = (item: string) => {
-    if (!onUpdateDetails) return;
+    if (!myDetails) return;
     const updatedDetails = {
       ...myDetails,
       languages: [...myDetails.languages, item]
     };
-    onUpdateDetails(updatedDetails);
+    dispatch(updateMyDetails(updatedDetails));
   };
 
   const handleRemoveLanguage = (index: number) => {
-    if (!onUpdateDetails) return;
+    if (!myDetails) return;
     const updatedDetails = {
       ...myDetails,
       languages: myDetails.languages.filter((_, i) => i !== index)
     };
-    onUpdateDetails(updatedDetails);
+    dispatch(updateMyDetails(updatedDetails));
   };
 
   const handleAvailabilityChange = (value: string) => {
-    if (onUpdateDetails) {
-      onUpdateDetails({
-        ...myDetails,
-        availability: value
-      });
-      setIsEditingAvailability(false);
-    }
+    if (!myDetails) return; // Added null check
+    const updatedDetails = {
+      ...myDetails,
+      availability: value
+    };
+    dispatch(updateMyDetails(updatedDetails));
+    setIsEditingAvailability(false);
   };
 
   const renderEditableSection = (
@@ -295,6 +304,11 @@ export default function ProfileDetails({ myDetails, onUpdateDetails }: ProfileDe
       </div>
     );
   };
+
+  // Render null or loading state if myDetails is not available yet
+  if (!myDetails) {
+      return null; // Or a loading spinner
+  }
 
   return (
     <div id="details" className="mt-8 bg-white text-gray-900 rounded-lg shadow p-6">

@@ -2,22 +2,24 @@
 
 import { Fragment, useState, useMemo } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import type { Project } from '@/data/mockProjects';
 import Image from 'next/image';
+import { useAppSelector, useAppDispatch } from '@/lib/hooks'; // Import typed hooks
+import { closeProjectsModal, setSelectedProject } from '@/lib/modalSlice'; // Import actions
+import type { Project } from '@/types';
 
-interface ProjectsModalProps {
-  projects: Project[];
-  onClose: () => void;
-}
+export default function ProjectsModal() {
+  // Get state and dispatch from Redux
+  const { isProjectsModalOpen, selectedProject } = useAppSelector(state => state.modal);
+  const projects = useAppSelector(state => state.profile.profileData?.experience.flatMap(emp => emp.projects || []) || []); // Get projects from profile state
+  const dispatch = useAppDispatch();
 
-export default function ProjectsModal({ projects, onClose }: ProjectsModalProps) {
   const projectsPerRow = 3;
   const initialVisibleProjects = projectsPerRow; // Show 1 row (3 projects) initially
 
   const [searchTerm, setSearchTerm] = useState('');
   const [sortCriteria, setSortCriteria] = useState('default'); // e.g., 'default', 'views', 'likes'
   const [filterCriteria, setFilterCriteria] = useState('all'); // e.g., 'all', 'youtube'
-  const [visibleProjectsCount, setVisibleProjectsCount] = useState(initialVisibleProjects);
+  const [visibleProjectsCounts, setVisibleProjectsCounts] = useState<Record<string, number>>({}); // Keep local for now
 
   // Filter projects based on search term and platform
   const filteredProjects = useMemo(() => {
@@ -52,11 +54,25 @@ export default function ProjectsModal({ projects, onClose }: ProjectsModalProps)
     return initialFilteredProjects;
   }, [filteredProjects, sortCriteria]);
 
-  const visibleProjects = sortedAndFilteredProjects.slice(0, visibleProjectsCount);
-  const hasMoreProjects = visibleProjectsCount < sortedAndFilteredProjects.length;
+  const visibleProjects = sortedAndFilteredProjects.slice(0, initialVisibleProjects);
+  const hasMoreProjects = initialVisibleProjects < sortedAndFilteredProjects.length;
 
-  const handleLoadMore = () => {
-    setVisibleProjectsCount(prevCount => prevCount + projectsPerRow);
+  const handleLoadMoreProjects = () => {
+    // If using a single count for the modal
+    // setVisibleProjectsCounts(prevCounts => ({ all: (prevCounts.all || projectsPerRow) + projectsPerRow }));
+    // If showing all projects, this function might not be needed or needs rethinking
+  };
+
+  const handleOpenProjectDetailModal = (project: Project) => {
+    dispatch(setSelectedProject(project)); // Dispatch action to set selected project in modal slice
+  };
+
+  const handleCloseProjectDetailModal = () => {
+    dispatch(setSelectedProject(null)); // Dispatch action to clear selected project
+  };
+
+  const handleCloseModal = () => {
+    dispatch(closeProjectsModal()); // Dispatch close action
   };
 
   // Helper to format numbers (e.g., 27.3M, 640k)
@@ -72,8 +88,8 @@ export default function ProjectsModal({ projects, onClose }: ProjectsModalProps)
   };
 
   return (
-    <Transition appear show={true} as={Fragment}>
-      <Dialog as="div" className="relative z-10" onClose={onClose}>
+    <Transition appear show={isProjectsModalOpen} as={Fragment}>
+      <Dialog as="div" className="relative z-10" onClose={handleCloseModal}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -108,7 +124,7 @@ export default function ProjectsModal({ projects, onClose }: ProjectsModalProps)
                   <button
                     type="button"
                     className="text-gray-400  hover:text-gray-600"
-                    onClick={onClose}
+                    onClick={handleCloseModal}
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -207,7 +223,7 @@ export default function ProjectsModal({ projects, onClose }: ProjectsModalProps)
                     <button
                       type="button"
                       className="text-blue-600  hover:underline text-sm font-semibold"
-                      onClick={handleLoadMore}
+                      onClick={handleLoadMoreProjects}
                     >
                       Load more projects
                     </button>
