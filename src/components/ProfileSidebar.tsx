@@ -13,6 +13,7 @@ interface ProfileSidebarProps {
   isOpenToWork?: boolean;
   subscribers?: number;
   verifiedDate?: string;
+  onUpdateBasicInfo?: (updatedInfo: BasicInfo) => void;
 }
 
 export default function ProfileSidebar({
@@ -22,6 +23,7 @@ export default function ProfileSidebar({
   isOpenToWork = false,
   subscribers,
   verifiedDate,
+  onUpdateBasicInfo,
 }: ProfileSidebarProps) {
   const [activeMenu, setActiveMenu] = useState("about");
 
@@ -30,12 +32,22 @@ export default function ProfileSidebar({
     onMenuItemClick(menu);
   };
 
+  const handleUpdateProfileImage = (imageUrl: string) => {
+    if (onUpdateBasicInfo) {
+      onUpdateBasicInfo({
+        ...basicInfo,
+        profileImage: imageUrl
+      });
+    }
+  };
+
   return (
-    <div className="bg-white text-gray-900 dark:bg-gray-800 dark:text-gray-100 rounded-lg shadow p-6 transition-colors duration-300">
+    <div className="bg-white text-gray-900 rounded-lg shadow p-6">
       <ProfileHeader
         basicInfo={basicInfo}
         username={username}
         isOpenToWork={isOpenToWork}
+        onUpdateProfileImage={handleUpdateProfileImage}
       />
 
       <ProfileStats

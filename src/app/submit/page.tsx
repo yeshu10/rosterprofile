@@ -1,26 +1,16 @@
 "use client";
 
-import { useState, FormEvent, useEffect } from "react";
+import { useState, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { PortfolioParseResponse, ProfileCreateResponse } from "@/types";
-import { useTheme } from '@/context/ThemeContext';
 
-// Assuming the parse endpoint returns data like { success: boolean, data?: ExtractedData }
-// Assuming the create endpoint returns data like { success: boolean, username?: string, message?: string }
 
 export default function SubmitPortfolio() {
   const [url, setUrl] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const router = useRouter();
-  const { theme } = useTheme();
-
-  useEffect(() => {
-    console.log('Current theme from useTheme:', theme);
-    const htmlElement = document.documentElement;
-    console.log('HTML element has dark class:', htmlElement.classList.contains('dark'));
-  }, [theme]);
-
+  
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");

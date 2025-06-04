@@ -5,6 +5,7 @@ export interface BasicInfo {
   aboutMe: string;
   location: string;
   email: string;
+  profileImage?: string;
   socialLinks: {
     github?: string;
     linkedin?: string;

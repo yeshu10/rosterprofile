@@ -102,64 +102,112 @@ export default function ProfileDetails({ myDetails, onUpdateDetails }: ProfileDe
     setShowAllDetails(prev => !prev);
   };
 
-  const handleAddItem = (type: string, value: string) => {
-    if (value.trim() && onUpdateDetails) {
-      const updatedDetails = { ...myDetails };
-      switch (type) {
-        case 'jobType':
-          updatedDetails.jobTypes = [...(myDetails.jobTypes || []), value.trim()];
-          setNewJobType('');
-          break;
-        case 'content':
-          updatedDetails.contentVerticals = [...(myDetails.contentVerticals || []), value.trim()];
-          setNewContent('');
-          break;
-        case 'platform':
-          updatedDetails.platformSpecialty = [...(myDetails.platformSpecialty || []), value.trim()];
-          setNewPlatform('');
-          break;
-        case 'skill':
-          updatedDetails.skills = [...(myDetails.skills || []), value.trim()];
-          setNewSkill('');
-          break;
-        case 'software':
-          updatedDetails.software = [...(myDetails.software || []), value.trim()];
-          setNewSoftware('');
-          break;
-        case 'language':
-          updatedDetails.languages = [...(myDetails.languages || []), value.trim()];
-          setNewLanguage('');
-          break;
-      }
-      onUpdateDetails(updatedDetails);
-    }
+  const handleAddJobType = (item: string) => {
+    if (!onUpdateDetails) return;
+    const updatedDetails = {
+      ...myDetails,
+      jobTypes: [...myDetails.jobTypes, item]
+    };
+    onUpdateDetails(updatedDetails);
   };
 
-  const handleRemoveItem = (type: string, valueToRemove: string) => {
-    if (onUpdateDetails) {
-      const updatedDetails = { ...myDetails };
-      switch (type) {
-        case 'jobType':
-          updatedDetails.jobTypes = (myDetails.jobTypes || []).filter(item => item !== valueToRemove);
-          break;
-        case 'content':
-          updatedDetails.contentVerticals = (myDetails.contentVerticals || []).filter(item => item !== valueToRemove);
-          break;
-        case 'platform':
-          updatedDetails.platformSpecialty = (myDetails.platformSpecialty || []).filter(item => item !== valueToRemove);
-          break;
-        case 'skill':
-          updatedDetails.skills = (myDetails.skills || []).filter(item => item !== valueToRemove);
-          break;
-        case 'software':
-          updatedDetails.software = (myDetails.software || []).filter(item => item !== valueToRemove);
-          break;
-        case 'language':
-          updatedDetails.languages = (myDetails.languages || []).filter(item => item !== valueToRemove);
-          break;
-      }
-      onUpdateDetails(updatedDetails);
-    }
+  const handleRemoveJobType = (index: number) => {
+    if (!onUpdateDetails) return;
+    const updatedDetails = {
+      ...myDetails,
+      jobTypes: myDetails.jobTypes.filter((_, i) => i !== index)
+    };
+    onUpdateDetails(updatedDetails);
+  };
+
+  const handleAddContent = (item: string) => {
+    if (!onUpdateDetails) return;
+    const updatedDetails = {
+      ...myDetails,
+      contentVerticals: [...myDetails.contentVerticals, item]
+    };
+    onUpdateDetails(updatedDetails);
+  };
+
+  const handleRemoveContent = (index: number) => {
+    if (!onUpdateDetails) return;
+    const updatedDetails = {
+      ...myDetails,
+      contentVerticals: myDetails.contentVerticals.filter((_, i) => i !== index)
+    };
+    onUpdateDetails(updatedDetails);
+  };
+
+  const handleAddPlatform = (item: string) => {
+    if (!onUpdateDetails) return;
+    const updatedDetails = {
+      ...myDetails,
+      platformSpecialty: [...myDetails.platformSpecialty, item]
+    };
+    onUpdateDetails(updatedDetails);
+  };
+
+  const handleRemovePlatform = (index: number) => {
+    if (!onUpdateDetails) return;
+    const updatedDetails = {
+      ...myDetails,
+      platformSpecialty: myDetails.platformSpecialty.filter((_, i) => i !== index)
+    };
+    onUpdateDetails(updatedDetails);
+  };
+
+  const handleAddSkill = (item: string) => {
+    if (!onUpdateDetails) return;
+    const updatedDetails = {
+      ...myDetails,
+      skills: [...myDetails.skills, item]
+    };
+    onUpdateDetails(updatedDetails);
+  };
+
+  const handleRemoveSkill = (index: number) => {
+    if (!onUpdateDetails) return;
+    const updatedDetails = {
+      ...myDetails,
+      skills: myDetails.skills.filter((_, i) => i !== index)
+    };
+    onUpdateDetails(updatedDetails);
+  };
+
+  const handleAddSoftware = (item: string) => {
+    if (!onUpdateDetails) return;
+    const updatedDetails = {
+      ...myDetails,
+      software: [...myDetails.software, item]
+    };
+    onUpdateDetails(updatedDetails);
+  };
+
+  const handleRemoveSoftware = (index: number) => {
+    if (!onUpdateDetails) return;
+    const updatedDetails = {
+      ...myDetails,
+      software: myDetails.software.filter((_, i) => i !== index)
+    };
+    onUpdateDetails(updatedDetails);
+  };
+
+  const handleAddLanguage = (item: string) => {
+    if (!onUpdateDetails) return;
+    const updatedDetails = {
+      ...myDetails,
+      languages: [...myDetails.languages, item]
+    };
+    onUpdateDetails(updatedDetails);
+  };
+
+  const handleRemoveLanguage = (index: number) => {
+    if (!onUpdateDetails) return;
+    const updatedDetails = {
+      ...myDetails,
+      languages: myDetails.languages.filter((_, i) => i !== index)
+    };
+    onUpdateDetails(updatedDetails);
   };
 
   const handleAvailabilityChange = (value: string) => {
@@ -174,215 +222,216 @@ export default function ProfileDetails({ myDetails, onUpdateDetails }: ProfileDe
 
   const renderEditableSection = (
     title: string,
-    items: string[] | undefined,
+    items: string[],
+    colorClasses: { bg: string; text: string },
+    onAdd: (item: string) => void,
+    onRemove: (index: number) => void,
     isEditing: boolean,
     setIsEditing: (value: boolean) => void,
-    newValue: string,
-    setNewValue: (value: string) => void,
-    type: string,
-    ref: React.RefObject<HTMLDivElement | null>,
-    bgColor: string,
-    textColor: string
+    newItem: string,
+    setNewItem: (value: string) => void,
+    ref: React.RefObject<HTMLDivElement | null>
   ) => {
-    if (!items || items.length === 0) return null;
-
     return (
-      <div ref={ref}>
-        <div className="flex justify-between items-center mb-2">
-          <span className="font-medium">{title}:</span>
+      <div className="mb-6">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
           <button
             onClick={() => setIsEditing(!isEditing)}
-            className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
+            className="text-blue-600 hover:text-blue-800"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-            </svg>
+            {isEditing ? 'Done' : 'Edit'}
           </button>
         </div>
-        <div className="flex flex-wrap gap-2">
-          {items.map(item => (
-            <div key={item} className="relative group">
-              <span className={`${bgColor} ${textColor} text-xs font-medium px-2 py-0.5 rounded-full`}>
-                {item}
-              </span>
+        <div ref={ref} className="flex flex-wrap gap-2">
+          {items.map((item, index) => (
+            <div
+              key={index}
+              className={`${colorClasses.bg} ${colorClasses.text} px-3 py-1 rounded-full text-sm flex items-center group`}
+            >
+              {item}
               {isEditing && (
                 <button
-                  onClick={() => handleRemoveItem(type, item)}
-                  className="absolute -top-1 -right-1 bg-gray-200 text-gray-600 rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
+                  onClick={() => onRemove(index)}
+                  className="ml-2 text-gray-600 hover:text-gray-800 transition-opacity hover:bg-gray-300"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
+                  ×
                 </button>
               )}
             </div>
           ))}
+          {isEditing && (
+            <div className="flex items-center gap-2">
+              <input
+                type="text"
+                value={newItem}
+                onChange={(e) => setNewItem(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    if (newItem.trim()) {
+                      onAdd(newItem.trim());
+                      setNewItem('');
+                    }
+                  }
+                }}
+                placeholder={`Add ${title.toLowerCase()}`}
+                className="flex-grow max-w-xs rounded-full border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm"
+              />
+              <button
+                onClick={() => {
+                  if (newItem.trim()) {
+                    onAdd(newItem.trim());
+                    setNewItem('');
+                  }
+                }}
+                className="bg-blue-500 text-white px-3 py-1.5 rounded-full hover:bg-blue-600 transition-colors"
+              >
+                +
+              </button>
+            </div>
+          )}
         </div>
-        {isEditing && (
-          <div className="mt-2 flex gap-2">
-            <input
-              type="text"
-              value={newValue}
-              onChange={(e) => setNewValue(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') {
-                  e.preventDefault();
-                  handleAddItem(type, newValue);
-                }
-              }}
-              placeholder={`Add new ${title.toLowerCase()}`}
-              className="flex-grow max-w-xs rounded-full border-gray-300 dark:border-gray-600 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:text-white text-sm"
-            />
-            <button
-              onClick={() => handleAddItem(type, newValue)}
-              className="inline-flex items-center px-3 py-1.5 border border-transparent text-sm leading-4 font-medium rounded-full text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-              </svg>
-              Add
-            </button>
-          </div>
-        )}
       </div>
     );
   };
 
   return (
-    <div id="details" className="mt-8 bg-white text-gray-900 dark:bg-gray-800 dark:text-gray-100 rounded-lg shadow p-6 transition-colors duration-300">
-      <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">My Details</h2>
-      {myDetails && (
-        <div className="space-y-4 text-gray-700 dark:text-gray-300">
-          {/* Availability */}
+    <div id="details" className="mt-8 bg-white text-gray-900 rounded-lg shadow p-6">
+      <h2 className="text-2xl font-bold text-gray-900 mb-4">My Details</h2>
+      <div className="space-y-4 text-gray-700">
+        {/* Availability */}
+        <div className="mb-6">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-lg font-semibold text-gray-900">Availability</h3>
+            <button
+              onClick={() => setIsEditingAvailability(!isEditingAvailability)}
+              className="text-blue-600 hover:text-blue-800"
+            >
+              {isEditingAvailability ? 'Done' : 'Edit'}
+            </button>
+          </div>
           <div ref={availabilityRef} className="relative">
-            <div className="flex justify-between items-center mb-2">
-              <span className="font-medium">Availability:</span>
-              <button
-                onClick={() => setIsEditingAvailability(!isEditingAvailability)}
-                className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
+            {isEditingAvailability ? (
+              <select
+                value={myDetails.availability}
+                onChange={(e) => handleAvailabilityChange(e.target.value)}
+                className="w-64 rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                </svg>
-              </button>
-            </div>
-            {!isEditingAvailability ? (
-              <p>{myDetails.availability}</p>
+                {AVAILABILITY_OPTIONS.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
             ) : (
-              <div className="relative">
-                <select
-                  value={myDetails.availability}
-                  onChange={(e) => handleAvailabilityChange(e.target.value)}
-                  className="w-64 rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:text-white text-sm"
-                >
-                  {AVAILABILITY_OPTIONS.map(option => (
-                    <option key={option} value={option}>
-                      {option}
-                    </option>
-                  ))}
-                </select>
-              </div>
+              <div className="text-gray-700">{myDetails.availability}</div>
             )}
           </div>
-
-          {/* Job Types */}
-          {renderEditableSection(
-            'Job Types',
-            myDetails.jobTypes,
-            isEditingJobTypes,
-            setIsEditingJobTypes,
-            newJobType,
-            setNewJobType,
-            'jobType',
-            jobTypesRef,
-            'bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300',
-            'text-blue-700 dark:text-blue-300'
-          )}
-
-          {/* Content Verticals */}
-          {renderEditableSection(
-            'Content Verticals',
-            myDetails.contentVerticals,
-            isEditingContent,
-            setIsEditingContent,
-            newContent,
-            setNewContent,
-            'content',
-            contentRef,
-            'bg-green-50 text-green-700 dark:bg-green-900/30 dark:text-green-300',
-            'text-green-700 dark:text-green-300'
-          )}
-
-          {/* Collapsible details */}
-          {showAllDetails && (
-            <div className="space-y-4">
-              {/* Platform Specialty */}
-              {renderEditableSection(
-                'Platform Specialty',
-                myDetails.platformSpecialty,
-                isEditingPlatform,
-                setIsEditingPlatform,
-                newPlatform,
-                setNewPlatform,
-                'platform',
-                platformRef,
-                'bg-purple-50 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300',
-                'text-purple-700 dark:text-purple-300'
-              )}
-
-              {/* Skills */}
-              {renderEditableSection(
-                'Skills',
-                myDetails.skills,
-                isEditingSkills,
-                setIsEditingSkills,
-                newSkill,
-                setNewSkill,
-                'skill',
-                skillsRef,
-                'bg-yellow-50 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-300',
-                'text-yellow-700 dark:text-yellow-300'
-              )}
-
-              {/* Software */}
-              {renderEditableSection(
-                'Softwares',
-                myDetails.software,
-                isEditingSoftware,
-                setIsEditingSoftware,
-                newSoftware,
-                setNewSoftware,
-                'software',
-                softwareRef,
-                'bg-red-50 text-red-700 dark:bg-red-900/30 dark:text-red-300',
-                'text-red-700 dark:text-red-300'
-              )}
-
-              {/* Languages */}
-              {renderEditableSection(
-                'Languages',
-                myDetails.languages,
-                isEditingLanguages,
-                setIsEditingLanguages,
-                newLanguage,
-                setNewLanguage,
-                'language',
-                languagesRef,
-                'bg-indigo-50 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300',
-                'text-indigo-700 dark:text-indigo-300'
-              )}
-            </div>
-          )}
-
-          {/* Toggle button */}
-          <button
-            onClick={toggleShowAllDetails}
-            className="text-blue-600 dark:text-blue-400 hover:underline mt-4"
-          >
-            {showAllDetails ? 'Show less' : 'See all'}
-          </button>
         </div>
-      )}
+
+        {/* Job Types */}
+        {renderEditableSection(
+          'Job Types',
+          myDetails.jobTypes,
+          {
+            bg: 'bg-blue-50',
+            text: 'text-blue-700'
+          },
+          handleAddJobType,
+          handleRemoveJobType,
+          isEditingJobTypes,
+          setIsEditingJobTypes,
+          newJobType,
+          setNewJobType,
+          jobTypesRef
+        )}
+
+        {/* Content Verticals */}
+        {renderEditableSection(
+          'Content Verticals',
+          myDetails.contentVerticals,
+          {
+            bg: 'bg-green-50',
+            text: 'text-green-700'
+          },
+          handleAddContent,
+          handleRemoveContent,
+          isEditingContent,
+          setIsEditingContent,
+          newContent,
+          setNewContent,
+          contentRef
+        )}
+
+        {/* Platform Specialty */}
+        {renderEditableSection(
+          'Platform Specialty',
+          myDetails.platformSpecialty,
+          {
+            bg: 'bg-purple-50',
+            text: 'text-purple-700'
+          },
+          handleAddPlatform,
+          handleRemovePlatform,
+          isEditingPlatform,
+          setIsEditingPlatform,
+          newPlatform,
+          setNewPlatform,
+          platformRef
+        )}
+
+        {/* Skills */}
+        {renderEditableSection(
+          'Skills',
+          myDetails.skills,
+          {
+            bg: 'bg-yellow-50',
+            text: 'text-yellow-700'
+          },
+          handleAddSkill,
+          handleRemoveSkill,
+          isEditingSkills,
+          setIsEditingSkills,
+          newSkill,
+          setNewSkill,
+          skillsRef
+        )}
+
+        {/* Software */}
+        {renderEditableSection(
+          'Software',
+          myDetails.software,
+          {
+            bg: 'bg-red-50',
+            text: 'text-red-700'
+          },
+          handleAddSoftware,
+          handleRemoveSoftware,
+          isEditingSoftware,
+          setIsEditingSoftware,
+          newSoftware,
+          setNewSoftware,
+          softwareRef
+        )}
+
+        {/* Languages */}
+        {renderEditableSection(
+          'Languages',
+          myDetails.languages,
+          {
+            bg: 'bg-indigo-50',
+            text: 'text-indigo-700'
+          },
+          handleAddLanguage,
+          handleRemoveLanguage,
+          isEditingLanguages,
+          setIsEditingLanguages,
+          newLanguage,
+          setNewLanguage,
+          languagesRef
+        )}
+      </div>
     </div>
   );
 } 
