@@ -102,7 +102,8 @@ export default function EmployerModal() {
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-black bg-opacity-25" />
+          <div className="fixed inset-0 backdrop-blur-sm bg-white/20 transition-all duration-300" />
+
         </Transition.Child>
 
         <div className="fixed inset-0 overflow-y-auto">
@@ -134,7 +135,7 @@ export default function EmployerModal() {
                       id="company"
                       value={formData.company || ''}
                       onChange={handleChange}
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm py-2"
                       required
                     />
                   </div>
@@ -148,7 +149,7 @@ export default function EmployerModal() {
                       id="position"
                       value={formData.position || ''}
                       onChange={handleChange}
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm py-2"
                       required
                     />
                   </div>
@@ -163,7 +164,7 @@ export default function EmployerModal() {
                         id="startDate"
                         value={formData.startDate || ''}
                         onChange={handleChange}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm py-2"
                         required
                       />
                     </div>
@@ -176,7 +177,7 @@ export default function EmployerModal() {
                         id="endDate"
                         value={formData.endDate || ''}
                         onChange={handleChange}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm py-2"
                       />
                     </div>
                   </div>
@@ -189,7 +190,7 @@ export default function EmployerModal() {
                       id="type"
                       value={formData.type || ''}
                       onChange={handleChange}
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm py-2"
                       required
                     >
                       <option value="">Select Type</option>

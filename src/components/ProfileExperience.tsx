@@ -56,7 +56,7 @@ export default function ProfileExperience({
         </div>
       </div>
 
-      <div className="space-y-4">
+      <div className="mt-6 space-y-4">
         {employers.slice(0, visibleExperiencesCount).map((employer) => (
           <div
             key={employer.id}
