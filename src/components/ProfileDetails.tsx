@@ -5,6 +5,7 @@ import { useAppSelector, useAppDispatch } from '@/lib/hooks';
 import { updateMyDetails } from '@/lib/profileSlice';
 import {  FaCheck } from "react-icons/fa";
 import { MdEdit } from "react-icons/md";
+import { FaChevronDown } from "react-icons/fa";
 
 
 
@@ -462,16 +463,14 @@ export default function ProfileDetails() {
               languagesRef
             )}
 
-            {/* Show Less Button - At the end when expanded */}
+            
             <div className="flex justify-start mt-4">
               <button
                 onClick={() => setShowAll(false)}
                 className="flex items-center text-blue-600 hover:text-blue-800 transition-colors"
               >
                 Show Less
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z" clipRule="evenodd" />
-                </svg>
+                <FaChevronDown />
               </button>
             </div>
           </>
