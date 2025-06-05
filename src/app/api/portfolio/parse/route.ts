@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import type { PortfolioParseResponse } from '@/types';
 import { mockData } from '@/data/mockPortfolio';
 
-export async function GET(request: Request): Promise<NextResponse<PortfolioParseResponse>> {
+export async function GET(): Promise<NextResponse<PortfolioParseResponse>> {
   try {
     const response: PortfolioParseResponse = {
       success: true,
