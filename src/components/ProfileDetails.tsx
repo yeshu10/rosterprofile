@@ -3,6 +3,9 @@
 import { useState, useRef, useEffect } from 'react';
 import { useAppSelector, useAppDispatch } from '@/lib/hooks';
 import { updateMyDetails } from '@/lib/profileSlice';
+import {  FaCheck } from "react-icons/fa";
+import { MdEdit } from "react-icons/md";
+
 
 
 
@@ -238,7 +241,8 @@ export default function ProfileDetails() {
             onClick={() => setIsEditing(!isEditing)}
             className="text-blue-600 hover:text-blue-800"
           >
-            {isEditing ? 'Done' : 'Edit'}
+            
+             {isEditing ? <FaCheck /> : < MdEdit />}
           </button>
         </div>
         <div ref={ref} className="flex flex-wrap gap-2">
@@ -311,7 +315,8 @@ export default function ProfileDetails() {
               onClick={() => setIsEditingAvailability(!isEditingAvailability)}
               className="text-blue-600 hover:text-blue-800"
             >
-              {isEditingAvailability ? 'Done' : 'Edit'}
+             
+              {isEditingAvailability ? <FaCheck /> : < MdEdit />}
             </button>
           </div>
           <div ref={availabilityRef} className="relative">
