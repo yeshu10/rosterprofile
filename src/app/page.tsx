@@ -37,7 +37,7 @@ export default function RootPage() {
         {typedText}
       </p>
       <p className="text-gray-800 text-base sm:text-lg max-w-xl italic mb-6">
-        No matter who you are or where you're from — this is your space to grow.
+        No matter who you are or where you&apos;re from — this is your space to grow.
         <br />
         Take control of your future with one bold move.
       </p>
@@ -54,22 +54,3 @@ export default function RootPage() {
 
 
 
-// "use client";
-
-// import { useRouter } from 'next/navigation';
-// import { useEffect } from 'react';
-
-// export default function RootPage() {
-//   const router = useRouter();
-
-//   useEffect(() => {
-//     router.push('/submit');
-//   }, [router]);
-
-//   return (
-//     // You can add a loading spinner or message here if needed
-//     <div className="flex items-center justify-center h-screen bg-gray-100 dark:bg-gray-900">
-//       <p className="text-gray-700 dark:text-gray-300">Redirecting to submit page...</p>
-//     </div>
-//   );
-// }

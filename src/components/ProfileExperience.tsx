@@ -5,7 +5,7 @@ import { useAppSelector, useAppDispatch } from '@/lib/hooks';
 import { setVisibleExperiencesCount } from '@/lib/uiSlice';
 import { openEmployerModal, openProjectDetailModal, setSelectedProject, openProjectsModal } from '@/lib/modalSlice';
 import type { RootState } from '@/lib/store';
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
 
 interface ProfileExperienceProps {

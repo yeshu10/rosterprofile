@@ -16,10 +16,10 @@ export async function GET(request: Request): Promise<NextResponse<PortfolioParse
   }
 }
 
-export async function POST(request: Request): Promise<NextResponse<PortfolioParseResponse>> {
+export async function POST(): Promise<NextResponse<PortfolioParseResponse>> {
   try {
     
-    await request.json(); 
+    //await request.json(); // The request is not used here, so this line can be removed or commented out depending on intent.
 
 
     const response: PortfolioParseResponse = {
