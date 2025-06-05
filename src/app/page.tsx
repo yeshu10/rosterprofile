@@ -43,7 +43,7 @@ export default function RootPage() {
       </p>
       <button
         onClick={handleRedirect}
-        className="px-6 py-3 bg-black text-white text-sm sm:text-base rounded-md hover:bg-gray-800 transition"
+        className="px-6 py-3 bg-black text-white text-sm sm:text-base rounded-md hover:bg-gray-800 transition cursor-pointer"
       >
         Begin Your Journey
       </button>

@@ -7,6 +7,7 @@ import { openEmployerModal, openProjectDetailModal, setSelectedProject, openProj
 import type { RootState } from '@/lib/store';
 import { useState } from 'react';
 import Image from 'next/image';
+import { FaChevronDown } from "react-icons/fa";
 
 interface ProfileExperienceProps {
   employers: Experience[];
@@ -75,13 +76,13 @@ export default function ProfileExperience({
         <div className="flex items-center space-x-4">
           <button
             onClick={handleViewProjectsClick}
-            className="text-blue-600  hover:underline text-sm font-semibold"
+            className="text-blue-600  hover:underline text-sm font-semibold cursor-pointer"
           >
             View Projects
           </button>
           <button
             onClick={handleAddExperienceClick}
-            className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 cursor-pointer focus:ring-blue-500"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -139,18 +140,17 @@ export default function ProfileExperience({
                   {employer.projects && employer.projects.length > 0 && (
                      <button
                       onClick={() => handleToggleProjects(employer.id)}
-                      className="text-gray-400 hover:text-gray-600 "
+                      className="text-gray-400 hover:text-gray-600 cursor-pointer"
                     >
-                      <svg xmlns="http://www.w3.org/2000/svg" className={`h-5 w-5 transition-transform duration-200 ${expandedEmployerId === employer.id ? 'rotate-180' : 'rotate-0'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                      </svg>
+                      
+                      <FaChevronDown />
                     </button>
                   )}
 
-                  {/* Edit Experience Button */}
+                 
                   <button
                     onClick={() => handleEditExperienceClick(employer)}
-                    className="text-gray-400 hover:text-gray-600 "
+                    className="text-gray-400 hover:text-gray-600 cursor-pointer"
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -206,7 +206,7 @@ export default function ProfileExperience({
                         <div className="p-3">
                            <h4 className="text-sm font-semibold text-gray-800 truncate">{project.title}</h4>
                            <p className="text-xs text-gray-600 mt-1 truncate">{project.description}</p>
-                           {/* You can add more project details here if needed */}
+                       
                          </div>
                       </div>
                     ))}
@@ -221,7 +221,7 @@ export default function ProfileExperience({
         })}
       </div>
 
-      {/* Show more experiences button */}
+    
       {visibleExperiencesCount < employers.length && (
         <div className="mt-6 text-center">
           <button
