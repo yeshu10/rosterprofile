@@ -9,7 +9,7 @@ export const mockData: PortfolioData = {
     aboutMe: "I'm a highly motivated full-stack developer and video editor with a strong focus on scalable applications and engaging digital content. I specialize in creating modern web apps and crafting high-quality videos for a variety of platforms.",
     location: "New York, USA",
     email: "test@example.com",
-    profileImage: "https://randomuser.me/api/portraits/women/32.jpg",
+    profileImage: "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg",
     socialLinks: {
       github: "https://github.com/testuser",
       linkedin: "https://linkedin.com/in/testuser",
