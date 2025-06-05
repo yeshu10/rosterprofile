@@ -1,13 +1,15 @@
 "use client";
 
+import Link from 'next/link';
+
 export default function Navbar() {
   return (
-    <nav className="bg-gray-200 p-4">
+    <nav className="bg-black p-4">
       <div className="container mx-auto flex justify-between items-center">
-        <div className="text-black text-xl font-bold">
+        <Link href="/" className="text-white text-xl font-bold">
           Roster Profile
-        </div>
+        </Link>
       </div>
     </nav>
   );
-} 
+}

@@ -51,7 +51,7 @@ export default function ProfileHeader() {
 
         <button
           onClick={() => setIsShareModalOpen(true)}
-          className="p-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+          className="p-2 bg-green-600 text-white rounded-md hover:bg-blue-700 transition"
           title="Share profile"
         >
           <FaShare size={18} />
