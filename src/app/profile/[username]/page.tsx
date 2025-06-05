@@ -36,9 +36,8 @@ export default function ProfilePage() {
         } else {
           dispatch(setError(data.message || 'Failed to fetch profile data'));
         }
-      } catch (err: unknown) {
-        const error = err as Error;
-        dispatch(setError(error.message || 'An error occurred'));
+      } catch (err: any) {
+        dispatch(setError(err.message || 'An error occurred'));
       }
     };
 
