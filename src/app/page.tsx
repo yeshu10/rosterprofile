@@ -3,7 +3,6 @@
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 
-// ✅ Declare it outside the component to avoid changing dependency array
 const fullText = 'Where Talent Meets Opportunity';
 
 export default function RootPage() {
@@ -25,7 +24,7 @@ export default function RootPage() {
       }, 2000);
       return () => clearTimeout(restartTimeout);
     }
-  }, [currentIndex]); // ✅ No need to include `fullText` here now
+  }, [currentIndex]); 
 
   const handleRedirect = () => {
     router.push('/submit');

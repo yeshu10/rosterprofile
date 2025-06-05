@@ -160,10 +160,10 @@ export default function ProfileExperience({
               </div>
               <p className="text-sm text-gray-600 mt-2">{employer.description}</p>
 
-              {/* Projects Section for this Employer */}
+              
               {employer.projects && employer.projects.length > 0 && expandedEmployerId === employer.id && (
                 <div className="mt-4">
-                   {/* Search, Sort, Filter Controls */}
+                  
                   <div className="flex space-x-4 mb-4">
                     <input
                       type="text"
