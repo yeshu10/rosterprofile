@@ -19,8 +19,6 @@ export async function GET(): Promise<NextResponse<PortfolioParseResponse>> {
 export async function POST(): Promise<NextResponse<PortfolioParseResponse>> {
   try {
     
-    //await request.json(); // The request is not used here, so this line can be removed or commented out depending on intent.
-
 
     const response: PortfolioParseResponse = {
       success: true,

@@ -2,10 +2,7 @@ import { NextResponse } from 'next/server';
 import type { Experience, PortfolioParseResponse } from '@/types';
 import { mockData } from '@/data/mockPortfolio';
 
-// In a real application, this would be stored in a database
-// let mockData = {
-//   experience: [] as Experience[]
-// };
+
 
 export async function PUT(request: Request): Promise<NextResponse<PortfolioParseResponse>> {
   try {
