@@ -40,6 +40,7 @@ const AVAILABILITY_OPTIONS = [
 ];
 
 export default function ProfileDetails() {
+  const [showAll, setShowAll] = useState(false);
   const [isEditingJobTypes, setIsEditingJobTypes] = useState(false);
   const [isEditingContent, setIsEditingContent] = useState(false);
   const [isEditingPlatform, setIsEditingPlatform] = useState(false);
@@ -333,105 +334,142 @@ export default function ProfileDetails() {
         </div>
 
         {/* Job Types */}
-        {renderEditableSection(
-          'Job Types',
-          myDetails.jobTypes,
-          {
-            bg: 'bg-blue-50',
-            text: 'text-blue-700'
-          },
-          handleAddJobType,
-          handleRemoveJobType,
-          isEditingJobTypes,
-          setIsEditingJobTypes,
-          newJobType,
-          setNewJobType,
-          jobTypesRef
-        )}
+        <div id="jobtype" className="mb-6">
+          {renderEditableSection(
+            'Job Types',
+            myDetails.jobTypes,
+            {
+              bg: 'bg-blue-50',
+              text: 'text-blue-700'
+            },
+            handleAddJobType,
+            handleRemoveJobType,
+            isEditingJobTypes,
+            setIsEditingJobTypes,
+            newJobType,
+            setNewJobType,
+            jobTypesRef
+          )}
+        </div>
 
         {/* Content Verticals */}
-        {renderEditableSection(
-          'Content Verticals',
-          myDetails.contentVerticals,
-          {
-            bg: 'bg-green-50',
-            text: 'text-green-700'
-          },
-          handleAddContent,
-          handleRemoveContent,
-          isEditingContent,
-          setIsEditingContent,
-          newContent,
-          setNewContent,
-          contentRef
+        <div id="content" className="mb-6">
+          {renderEditableSection(
+            'Content Verticals',
+            myDetails.contentVerticals,
+            {
+              bg: 'bg-green-50',
+              text: 'text-green-700'
+            },
+            handleAddContent,
+            handleRemoveContent,
+            isEditingContent,
+            setIsEditingContent,
+            newContent,
+            setNewContent,
+            contentRef
+          )}
+        </div>
+
+        {/* See All Toggle Button - Only show when not expanded */}
+        {!showAll && (
+          <div className="flex justify-start mt-4">
+            <button
+              onClick={() => setShowAll(true)}
+              className="flex items-center text-blue-600 hover:text-blue-800 transition-colors"
+            >
+              See All Details
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+              </svg>
+            </button>
+          </div>
         )}
 
-        {/* Platform Specialty */}
-        {renderEditableSection(
-          'Platform Specialty',
-          myDetails.platformSpecialty,
-          {
-            bg: 'bg-purple-50',
-            text: 'text-purple-700'
-          },
-          handleAddPlatform,
-          handleRemovePlatform,
-          isEditingPlatform,
-          setIsEditingPlatform,
-          newPlatform,
-          setNewPlatform,
-          platformRef
-        )}
+        {/* Additional sections - Only visible when showAll is true */}
+        {showAll && (
+          <>
+            {/* Platform Specialty */}
+            {renderEditableSection(
+              'Platform Specialty',
+              myDetails.platformSpecialty,
+              {
+                bg: 'bg-purple-50',
+                text: 'text-purple-700'
+              },
+              handleAddPlatform,
+              handleRemovePlatform,
+              isEditingPlatform,
+              setIsEditingPlatform,
+              newPlatform,
+              setNewPlatform,
+              platformRef
+            )}
 
-        {/* Skills */}
-        {renderEditableSection(
-          'Skills',
-          myDetails.skills,
-          {
-            bg: 'bg-yellow-50',
-            text: 'text-yellow-700'
-          },
-          handleAddSkill,
-          handleRemoveSkill,
-          isEditingSkills,
-          setIsEditingSkills,
-          newSkill,
-          setNewSkill,
-          skillsRef
-        )}
+            {/* Skills */}
+            {renderEditableSection(
+              'Skills',
+              myDetails.skills,
+              {
+                bg: 'bg-yellow-50',
+                text: 'text-yellow-700'
+              },
+              handleAddSkill,
+              handleRemoveSkill,
+              isEditingSkills,
+              setIsEditingSkills,
+              newSkill,
+              setNewSkill,
+              skillsRef
+            )}
 
-        {/* Software */}
-        {renderEditableSection(
-          'Software',
-          myDetails.software,
-          {
-            bg: 'bg-red-50',
-            text: 'text-red-700'
-          },
-          handleAddSoftware,
-          handleRemoveSoftware,
-          isEditingSoftware,
-          setIsEditingSoftware,
-          newSoftware,
-          setNewSoftware,
-          softwareRef
-        )}
+            {/* Software */}
+            {renderEditableSection(
+              'Software',
+              myDetails.software,
+              {
+                bg: 'bg-red-50',
+                text: 'text-red-700'
+              },
+              handleAddSoftware,
+              handleRemoveSoftware,
+              isEditingSoftware,
+              setIsEditingSoftware,
+              newSoftware,
+              setNewSoftware,
+              softwareRef
+            )}
 
-        {/* Languages */}
-        {renderEditableSection(
-          'Languages',
-          myDetails.languages,
-          {
-            bg: 'bg-indigo-50',
-            text: 'text-indigo-700'
-          },
-          handleAddLanguage,
-          handleRemoveLanguage,
-          isEditingLanguages,
-          setIsEditingLanguages,
-          newLanguage,
-          setNewLanguage,
-          languagesRef
+            {/* Languages */}
+            {renderEditableSection(
+              'Languages',
+              myDetails.languages,
+              {
+                bg: 'bg-indigo-50',
+                text: 'text-indigo-700'
+              },
+              handleAddLanguage,
+              handleRemoveLanguage,
+              isEditingLanguages,
+              setIsEditingLanguages,
+              newLanguage,
+              setNewLanguage,
+              languagesRef
+            )}
+
+            {/* Show Less Button - At the end when expanded */}
+            <div className="flex justify-start mt-4">
+              <button
+                onClick={() => setShowAll(false)}
+                className="flex items-center text-blue-600 hover:text-blue-800 transition-colors"
+              >
+                Show Less
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z" clipRule="evenodd" />
+                </svg>
+              </button>
+            </div>
+          </>
         )}
       </div>
     </div>
