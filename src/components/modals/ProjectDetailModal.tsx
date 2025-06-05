@@ -41,7 +41,7 @@ export default function ProjectDetailModal() {
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-black bg-opacity-25" />
+          <div className="fixed inset-0 backdrop-blur-sm bg-white/30" />
         </Transition.Child>
 
         <div className="fixed inset-0 overflow-y-auto">
@@ -113,7 +113,7 @@ export default function ProjectDetailModal() {
                     {/* Project Description */}
                     <p className="text-gray-700 text-sm">{project.description}</p>
 
-                    {/* View Project Button (e.g., View on YouTube) */}
+              
                     {project.projectUrl && (
                       <div className="mt-4">
                         <a
