@@ -1,15 +1,8 @@
 import { NextResponse } from 'next/server';
-import type {  PortfolioParseResponse } from '@/types';
+import type { PortfolioParseResponse } from '@/types';
+import { mockData } from '@/data/mockPortfolio';
 
-import { mockData as initialMockData } from "../../../../data/mockPortfolio"; 
-
-// Create a mutable copy of the mock data
-const mockData = initialMockData;
-
-export { mockData }; // Export the mutable mockData
-
-
-export async function GET(): Promise<NextResponse<PortfolioParseResponse>> {
+export async function GET(request: Request): Promise<NextResponse<PortfolioParseResponse>> {
   try {
     const response: PortfolioParseResponse = {
       success: true,
@@ -23,10 +16,10 @@ export async function GET(): Promise<NextResponse<PortfolioParseResponse>> {
   }
 }
 
-export async function POST(): Promise<NextResponse<PortfolioParseResponse>> {
+export async function POST(request: Request): Promise<NextResponse<PortfolioParseResponse>> {
   try {
     
-    // await request.json(); // Request parameter is not used
+    await request.json(); 
 
 
     const response: PortfolioParseResponse = {

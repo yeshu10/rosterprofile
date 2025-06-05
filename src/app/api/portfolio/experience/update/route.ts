@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import type { Experience, PortfolioParseResponse } from '@/types';
-// Import and use the shared mockData from parse/route.ts
-import { mockData } from '@/app/api/portfolio/parse/route';
+import { mockData } from '@/data/mockPortfolio';
 
 // In a real application, this would be stored in a database
 // let mockData = {
@@ -12,40 +11,34 @@ export async function PUT(request: Request): Promise<NextResponse<PortfolioParse
   try {
     const updatedExperience: Experience = await request.json();
 
-    // Validate the experience data
-    if (!updatedExperience.id || !updatedExperience.company || !updatedExperience.position) {
+    // Validate required fields
+    if (!updatedExperience.id || !updatedExperience.company || !updatedExperience.position || !updatedExperience.type) {
       return NextResponse.json({
         success: false,
-        message: "Invalid experience data. Required fields: id, company, position"
+        message: 'Missing required fields'
       });
     }
 
-    // Find and update the experience in the shared mock data
+    // Find and update the experience in the mock data
     const index = mockData.experience.findIndex(exp => exp.id === updatedExperience.id);
     if (index === -1) {
       return NextResponse.json({
         success: false,
-        message: "Experience not found"
+        message: 'Experience not found'
       });
     }
 
-    // Update the experience in the shared mock data
     mockData.experience[index] = updatedExperience;
 
-    // Return the entire updated portfolio data
-    const response: PortfolioParseResponse = {
+    return NextResponse.json({
       success: true,
-      data: { // Return the full PortfolioData structure
-        ...mockData
-      }
-    };
-
-    return NextResponse.json(response);
+      data: mockData
+    });
   } catch (err) {
-    console.error("Error updating experience:", err);
+    console.error('Error updating experience:', err);
     return NextResponse.json({
       success: false,
-      message: "An internal error occurred while updating experience."
+      message: 'Failed to update experience'
     });
   }
 } 

@@ -1,3 +1,5 @@
+import type { PortfolioData } from '@/types';
+
 export const mockData: PortfolioData = {
   username: "testuser",
   basicInfo: {
@@ -7,6 +9,7 @@ export const mockData: PortfolioData = {
     aboutMe: "I'm a highly motivated full-stack developer and video editor with a strong focus on scalable applications and engaging digital content. I specialize in creating modern web apps and crafting high-quality videos for a variety of platforms.",
     location: "New York, USA",
     email: "test@example.com",
+    profileImage: "https://via.placeholder.com/400x400?text=Profile",
     socialLinks: {
       github: "https://github.com/testuser",
       linkedin: "https://linkedin.com/in/testuser",

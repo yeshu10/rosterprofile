@@ -2,7 +2,7 @@
 
 import { Fragment, useState, useEffect } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import type { Experience, Project } from '@/types';
+import type { Experience } from '@/types';
 import { useAppSelector, useAppDispatch } from '@/lib/hooks';
 import { closeEmployerModal, ModalState } from '@/lib/modalSlice';
 import { addExperience, updateExperience } from '@/lib/profileSlice';

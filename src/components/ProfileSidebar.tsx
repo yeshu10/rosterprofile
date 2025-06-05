@@ -6,16 +6,21 @@ import ProfileMenu from './ProfileMenu';
 import { useAppSelector, useAppDispatch } from '@/lib/hooks'; 
 import { setActiveMenu } from '@/lib/uiSlice';
 import type { RootState } from '@/lib/store';
+import type { BasicInfo } from '@/types';
 
 interface ProfileSidebarProps {
   username: string;
   onMenuItemClick: (menu: string) => void;
+  isOpenToWork?: boolean;
+  subscribers?: number;
+  verifiedDate?: string;
+  onUpdateBasicInfo: (updatedInfo: BasicInfo) => void;
 }
 
 export default function ProfileSidebar({ 
-
   onMenuItemClick,
-  
+  subscribers,
+  verifiedDate
 }: ProfileSidebarProps) {
  
   const profileData = useAppSelector((state: RootState) => state.profile.profileData);
@@ -29,8 +34,6 @@ export default function ProfileSidebar({
     onMenuItemClick(menu);
   };
 
-
-
   if (!profileData?.basicInfo) {
       return null; // Or a loading spinner
   }
@@ -41,8 +44,8 @@ export default function ProfileSidebar({
 
       <ProfileStats
         location={profileData.basicInfo.location} 
-        subscribers={profileData.followerCount} 
-        verifiedDate={profileData.verifiedDate} 
+        subscribers={subscribers} 
+        verifiedDate={verifiedDate} 
       />
 
       <ProfileMenu

@@ -6,9 +6,6 @@ import Image from 'next/image';
 import { useAppSelector, useAppDispatch } from '@/lib/hooks'; 
 import { setSelectedProject } from '@/lib/modalSlice'; 
 
-import type { Project } from '@/types';
-
-
 export default function ProjectDetailModal() {
 
   const { selectedProject: project } = useAppSelector(state => state.modal);

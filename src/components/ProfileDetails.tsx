@@ -40,7 +40,6 @@ const AVAILABILITY_OPTIONS = [
 ];
 
 export default function ProfileDetails() {
-  const [showAllDetails, setShowAllDetails] = useState(false);
   const [isEditingJobTypes, setIsEditingJobTypes] = useState(false);
   const [isEditingContent, setIsEditingContent] = useState(false);
   const [isEditingPlatform, setIsEditingPlatform] = useState(false);
@@ -55,7 +54,6 @@ export default function ProfileDetails() {
   const [newSkill, setNewSkill] = useState('');
   const [newSoftware, setNewSoftware] = useState('');
   const [newLanguage, setNewLanguage] = useState('');
-  const [newAvailability, setNewAvailability] = useState('');
 
   const jobTypesRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -99,10 +97,6 @@ export default function ProfileDetails() {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
-
-  const toggleShowAllDetails = () => {
-    setShowAllDetails(prev => !prev);
-  };
 
   // Update handler functions to dispatch actions
   const handleAddJobType = (item: string) => {
