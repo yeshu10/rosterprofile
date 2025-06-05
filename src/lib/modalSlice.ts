@@ -4,6 +4,7 @@ import { Project, Experience } from '@/types';
 export interface ModalState {
   isProjectsModalOpen: boolean;
   isEmployerModalOpen: boolean;
+  isProjectDetailModalOpen: boolean;
   selectedProject: Project | null;
   selectedEmployer: Experience | undefined;
 }
@@ -11,6 +12,7 @@ export interface ModalState {
 const initialState: ModalState = {
   isProjectsModalOpen: false,
   isEmployerModalOpen: false,
+  isProjectDetailModalOpen: false,
   selectedProject: null,
   selectedEmployer: undefined,
 };
@@ -34,12 +36,18 @@ const modalSlice = createSlice({
       state.isEmployerModalOpen = false;
       state.selectedEmployer = undefined;
     },
+    openProjectDetailModal(state) {
+      state.isProjectDetailModalOpen = true;
+    },
+    closeProjectDetailModal(state) {
+      state.isProjectDetailModalOpen = false;
+    },
     setSelectedProject(state, action: PayloadAction<Project | null>) {
       state.selectedProject = action.payload;
     }
   },
 });
 
-export const { openProjectsModal, closeProjectsModal, openEmployerModal, closeEmployerModal, setSelectedProject } = modalSlice.actions;
+export const { openProjectsModal, closeProjectsModal, openEmployerModal, closeEmployerModal, openProjectDetailModal, closeProjectDetailModal, setSelectedProject } = modalSlice.actions;
 
 export default modalSlice.reducer; 
