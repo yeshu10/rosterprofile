@@ -2,10 +2,12 @@ This document outlines the core flow, component structure, state management, and
  
   Deployed LINK :https://rosteruserprofile.vercel.app/
   API DOCUMNETATION :https://app.swaggerhub.com/apis-docs/justforlearning-b6e/rosterprofile/1.1.0
-  
+  video walk through: https://drive.google.com/drive/folders/1jHraiA6qic7ipxY4U7SL5MTLSw86diDr?usp=sharing
+
 1. User Flow
 
 Step 1: Landing Page (/)
+
 A simple introductory page with a typing animation.
 
 Purpose: Provides a clean entry point into the application.
@@ -13,6 +15,7 @@ Purpose: Provides a clean entry point into the application.
 Users are guided or redirected to the next route.
 
 Step 2: Submit Page (/submit)
+
 This route allows users to submit their personal portfolio link for parsing and profile generation.
 
 Actions:
@@ -85,3 +88,18 @@ User Authentication: Add auth to tie submitted profiles to user accounts for upd
 Image/File Uploads: Enhance profile richness by allowing users to upload missing assets if not parsed.
 
 Multi-Stage Editing: Let users confirm, edit, and enrich parsed data before publishing their profile.
+
+
+Tool Chat Gpt
+AI Prompts 
+
+Generate a placeholder mock API response for user portfolio data using TypeScript interfaces.
+
+To reduce API call frequency, I requested a debounced input handler via AI. I then refined it to handle edge cases and added loading states, improving performance and user experience without relying solely on the AI output.
+
+I used AI to quickly generate boilerplate code for a Redux slice using @reduxjs/toolkit. This helped speed up setup, but I customized the reducers, initial state, and action naming to better align with project logic and scalability needs.
+
+To get direct urls of dummy image 
+
+
+
