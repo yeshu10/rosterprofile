@@ -26,7 +26,7 @@ export const mockProjects: Project[] = [
     id: 'proj-2',
     title: 'Do NOT choose the wrong box...',
     description: 'Choosing the wrong box challenge.',
-    imageUrl: 'https://images.pexels.com/photos/6476589/pexels-photo-6476589.jpeg', // Placeholder image path
+    imageUrl: 'https://images.pexels.com/photos/6476589/pexels-photo-6476589.jpeg', 
     projectUrl: '#',
     githubUrl: '#',
     views: 19000000,
@@ -81,7 +81,7 @@ export const mockProjects: Project[] = [
     id: 'proj-7',
     title: 'Pro Singer Reacts to Best TikT...',
     description: 'A pro singer reacts to popular TikToks.',
-    imageUrl: 'https://images.pexels.com/photos/4348405/pexels-photo-4348405.jpeg', // Placeholder image path
+    imageUrl: 'https://images.pexels.com/photos/4348405/pexels-photo-4348405.jpeg', 
     projectUrl: '#',
     githubUrl: '#',
     views: 4900000,
@@ -92,19 +92,19 @@ export const mockProjects: Project[] = [
     id: 'proj-8',
     title: 'EXTREME TRY NOT TO CRY C...',
     description: 'Extreme try not to cry challenge.',
-    imageUrl: 'https://images.pexels.com/photos/8016323/pexels-photo-8016323.jpeg', // Placeholder image path
+    imageUrl: 'https://images.pexels.com/photos/8016323/pexels-photo-8016323.jpeg', 
     projectUrl: '#',
     githubUrl: '#',
     views: 4200000,
     likes: 15000,
     platform: 'youtube',
   },
-  // Add more mock projects for testing load more
+  
    {
     id: 'proj-9',
     title: 'Another Project 1',
     description: 'Description for another project 1.',
-    imageUrl: 'https://images.pexels.com/photos/4050291/pexels-photo-4050291.jpeg', // Placeholder image path
+    imageUrl: 'https://images.pexels.com/photos/4050291/pexels-photo-4050291.jpeg', 
     projectUrl: '#',
     githubUrl: '#',
     views: 1000000,
@@ -115,7 +115,7 @@ export const mockProjects: Project[] = [
     id: 'proj-10',
     title: 'Another Project 2',
     description: 'Description for another project 2.',
-    imageUrl: 'https://images.pexels.com/photos/4348403/pexels-photo-4348403.jpeg', // Placeholder image path
+    imageUrl: 'https://images.pexels.com/photos/4348403/pexels-photo-4348403.jpeg', 
     projectUrl: '#',
     githubUrl: '#',
     views: 500000,

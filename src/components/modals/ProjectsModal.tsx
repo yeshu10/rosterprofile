@@ -8,20 +8,17 @@ import { closeProjectsModal } from '@/lib/modalSlice';
 
 
 export default function ProjectsModal() {
-  // Get state and dispatch from Redux
+  
   const { isProjectsModalOpen } = useAppSelector(state => state.modal);
   const projects = useAppSelector(state => state.profile.profileData?.experience.flatMap(emp => emp.projects || []) || []); // Get projects from profile state
   const dispatch = useAppDispatch();
 
   const projectsPerRow = 3;
-  const initialVisibleProjects = projectsPerRow; // Show 1 row (3 projects) initially
+  const initialVisibleProjects = projectsPerRow; 
 
   const [searchTerm, setSearchTerm] = useState('');
-  const [sortCriteria, setSortCriteria] = useState('default'); // e.g., 'default', 'views', 'likes'
-  const [filterCriteria, setFilterCriteria] = useState('all'); // e.g., 'all', 'youtube'
-  // const [visibleProjectsCounts, setVisibleProjectsCounts] = useState<Record<string, number>>({});
-
-  // Filter projects based on search term and platform
+  const [sortCriteria, setSortCriteria] = useState('default'); 
+  const [filterCriteria, setFilterCriteria] = useState('all');   
   const filteredProjects = useMemo(() => {
     const initialProjects = projects;
 

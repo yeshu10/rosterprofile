@@ -10,7 +10,7 @@ import {
   setUrl,
 } from "../../lib/profileSlice";
 import { PortfolioParseResponse, ProfileCreateResponse } from "@/types";
-import type { RootState } from "../../lib/store"; // Adjust the path to your store
+import type { RootState } from "../../lib/store"; 
 
 export default function SubmitPortfolio() {
   const dispatch = useDispatch();
